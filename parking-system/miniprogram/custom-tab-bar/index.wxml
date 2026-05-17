@@ -1,0 +1,29 @@
+<view class="tabbar-wrap">
+  <view class="tabbar-bg"></view>
+  <view class="tabbar">
+    <view class="tab-side">
+      <block wx:for="{{list}}" wx:key="pagePath">
+        <view wx:if="{{index < 2}}" class="tab-item {{selected === index ? 'is-active' : ''}}" bindtap="switchTab" data-path="{{item.pagePath}}" data-index="{{index}}">
+          <image class="tab-icon" src="{{selected === index ? item.selectedIconPath : item.iconPath}}" mode="aspectFit"></image>
+          <text class="tab-text">{{item.text}}</text>
+        </view>
+      </block>
+    </view>
+
+    <view class="scan-trigger" bindtap="onScanTap">
+      <view class="scan-button">
+        <image class="scan-icon" src="/images/tabbar-scan.svg" mode="aspectFit"></image>
+      </view>
+      <text class="scan-text">扫码</text>
+    </view>
+
+    <view class="tab-side tab-side-right">
+      <block wx:for="{{list}}" wx:key="pagePath">
+        <view wx:if="{{index >= 2}}" class="tab-item {{selected === index ? 'is-active' : ''}}" bindtap="switchTab" data-path="{{item.pagePath}}" data-index="{{index}}">
+          <image class="tab-icon" src="{{selected === index ? item.selectedIconPath : item.iconPath}}" mode="aspectFit"></image>
+          <text class="tab-text">{{item.text}}</text>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

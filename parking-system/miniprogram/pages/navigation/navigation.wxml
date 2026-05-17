@@ -1,0 +1,45 @@
+<view class="page">
+  <view class="nav" style="padding-top: {{statusBarHeight}}px">
+    <view class="back" bindtap="goBack">‹</view>
+    <text class="title">导航中</text>
+    <text class="exit" bindtap="exitNavigation">退出</text>
+  </view>
+
+  <view class="map-area">
+    <view class="route-card">
+      <view class="turn-icon">↱</view>
+      <view class="route-text">
+        <text class="route-main">剩余 320 米</text>
+        <text class="route-road">进入 朝阳北路辅路</text>
+      </view>
+      <text class="route-arrow">›</text>
+      <view class="route-meta">全程剩余 1.2 公里 · 5分钟</view>
+    </view>
+
+    <view class="street street-a"></view>
+    <view class="street street-b"></view>
+    <view class="street street-c"></view>
+    <view class="river"></view>
+    <view class="polyline one"></view>
+    <view class="polyline two"></view>
+    <view class="polyline three"></view>
+    <view class="start-dot">起</view>
+    <view class="end-dot">终</view>
+    <view class="car-dot"></view>
+
+    <view class="locate-btn">⌖</view>
+    <view class="refresh-btn" bindtap="refreshRoute">刷新</view>
+
+    <view class="park-card">
+      <image class="park-thumb" src="/images/parking_building.jpg" mode="aspectFill"></image>
+      <view class="park-info">
+        <text class="park-name">{{parkName}}</text>
+        <text class="park-sub">B2层 · 空位数 <text class="green">328</text></text>
+      </view>
+      <view class="arrival-row">
+        <text>预计 <text class="green time">09:48</text> 到达</text>
+        <text bindtap="viewDetail">查看详情 ›</text>
+      </view>
+    </view>
+  </view>
+</view>

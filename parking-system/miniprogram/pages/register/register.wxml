@@ -1,0 +1,42 @@
+<view class="login-container">
+  <view class="top-spacer"></view>
+
+  <view class="logo-section">
+    <image class="logo-icon" src="/images/logo.png" mode="aspectFit" />
+    <text class="logo-title">用户注册</text>
+    <text class="logo-subtitle">创建账号后即可使用完整服务</text>
+  </view>
+
+  <view class="form-section">
+    <view class="form-item">
+      <view class="input-icon">
+        <view class="icon-phone-body">
+          <view class="icon-phone-dot"></view>
+        </view>
+      </view>
+      <input class="form-input" type="number" placeholder="请输入手机号" maxlength="11" bindinput="onPhoneInput" value="{{phone}}" />
+    </view>
+
+    <view class="form-item">
+      <view class="input-icon">
+        <view class="icon-lock-hook"></view>
+        <view class="icon-lock-body"></view>
+      </view>
+      <input class="form-input" password placeholder="请输入密码（至少6位）" bindinput="onPasswordInput" value="{{password}}" />
+    </view>
+
+    <view class="form-item">
+      <view class="input-icon">
+        <view class="icon-shield-top"></view>
+        <view class="icon-shield-body"></view>
+      </view>
+      <input class="form-input" password placeholder="请再次输入密码" bindinput="onConfirmPasswordInput" value="{{confirmPassword}}" />
+    </view>
+
+    <button class="btn-submit" bindtap="handleRegister">注册</button>
+
+    <view class="switch-mode">
+      <text class="link-text" bindtap="navigateToLogin">已有账号？返回登录</text>
+    </view>
+  </view>
+</view>

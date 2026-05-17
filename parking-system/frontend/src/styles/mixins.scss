@@ -1,0 +1,181 @@
+@use './variables.scss' as *;
+
+// Flexbox 布局
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+@mixin flex-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// 文本省略
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin text-ellipsis-multi($lines: 2) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// 清除浮动
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+// 卡片样式
+@mixin card {
+  background: $bg-color;
+  border-radius: $border-radius-base;
+  box-shadow: $box-shadow-light;
+  padding: $spacing-md;
+}
+
+// 按钮样式
+@mixin button-base {
+  display: inline-block;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $border-radius-base;
+  border: 1px solid $border-base;
+  cursor: pointer;
+  transition: $transition-base;
+  font-size: $font-size-base;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+  
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+// 输入框样式
+@mixin input-base {
+  width: 100%;
+  padding: $spacing-sm $spacing-md;
+  border: 1px solid $border-base;
+  border-radius: $border-radius-base;
+  font-size: $font-size-base;
+  transition: $transition-base;
+  
+  &:focus {
+    border-color: $primary-color;
+    outline: none;
+  }
+  
+  &:disabled {
+    background-color: $bg-hover;
+    cursor: not-allowed;
+  }
+}
+
+// 滚动条样式
+@mixin scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+  }
+  
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+}
+
+// 响应式断点
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == 'mobile' {
+    @media (max-width: 768px) {
+      @content;
+    }
+  } @else if $breakpoint == 'tablet' {
+    @media (min-width: 769px) and (max-width: 1024px) {
+      @content;
+    }
+  } @else if $breakpoint == 'desktop' {
+    @media (min-width: 1025px) {
+      @content;
+    }
+  }
+}
+
+// 动画
+@mixin fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@mixin slide-in-down {
+  animation: slideInDown 0.3s ease-out;
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// 状态标签
+@mixin status-tag($color) {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-xs;
+  background-color: rgba($color, 0.1);
+  color: $color;
+  border: 1px solid rgba($color, 0.3);
+}

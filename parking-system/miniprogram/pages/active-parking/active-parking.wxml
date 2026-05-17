@@ -1,0 +1,79 @@
+<view class="active-parking-page">
+  <view class="hero" style="padding-top: {{statusBarHeight + 22}}px;">
+    <view class="hero-title-row">
+      <view>
+        <text class="hero-title">停车中</text>
+        <text class="hero-subtitle">订单进行中</text>
+      </view>
+    </view>
+    <view class="plate-card">
+      <view class="plate-box">
+        <text class="plate-number">{{order.plateNumber || '京A · 12345'}}</text>
+        <text class="edit-icon">↗</text>
+      </view>
+      <text class="lot-name">{{order.parkingLotName || '朝阳大悦城停车场'}}</text>
+      <text class="floor-text">地下停车场 B2层</text>
+    </view>
+  </view>
+
+  <view class="info-card">
+    <view class="info-row">
+      <text class="info-label">入场时间</text>
+      <text class="info-value">{{order.startTime || '—'}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">停车时长</text>
+      <text class="info-value info-green">{{timer}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">预计费用</text>
+      <text class="info-value {{isFree ? 'info-green' : 'info-orange'}}">{{isFree ? '免费' : '¥' + estimatedFee}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">计费规则</text>
+      <text class="info-value">¥{{hourlyRate}}/小时</text>
+    </view>
+    <text wx:if="{{isFree}}" class="free-tip">首次入场15分钟内免费</text>
+  </view>
+
+  <view class="action-card">
+    <view class="action-item">
+      <text class="action-icon">♙</text>
+      <text class="action-text">停车优惠</text>
+    </view>
+    <view class="action-item">
+      <text class="action-icon">◷</text>
+      <text class="action-text">延长停车</text>
+    </view>
+    <view class="action-item">
+      <text class="action-icon">☊</text>
+      <text class="action-text">联系客服</text>
+    </view>
+  </view>
+
+  <view class="pay-btn" bindtap="handlePay">去支付</view>
+
+  <view class="tips-card">
+    <text class="tips-title">温馨提示</text>
+    <text class="tips-text">请在离场前完成支付，超时将收取额外费用</text>
+    <view class="tips-footer">
+      <text>支持无感支付，开通后可自动扣费</text>
+      <text class="open-link">去开通 ›</text>
+    </view>
+  </view>
+
+  <view class="location-card">
+    <view class="location-row">
+      <view class="location-icon-wrap">
+        <image class="location-icon" src="/images/location.png" mode="aspectFit"></image>
+      </view>
+      <view class="location-info">
+        <text class="location-label">车位位置</text>
+        <text class="location-address">{{order.address || '—'}}</text>
+        <text class="location-spot">{{order.spot || 'A区·3层·A-025'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-spacer"></view>
+</view>

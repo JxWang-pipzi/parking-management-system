@@ -1,0 +1,43 @@
+<view class="page">
+  <view class="header-bar">
+    <text class="header-title">我的车辆</text>
+    <text class="header-add" bindtap="goAddVehicle">+ 添加</text>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <block wx:elif="{{vehicles.length > 0}}">
+    <view class="vehicle-card" wx:for="{{vehicles}}" wx:key="id">
+      <view class="card-main">
+        <view class="plate-box">
+          <text class="plate-text">{{item.displayPlate || item.plateNumber}}</text>
+        </view>
+        <view class="card-info">
+          <view class="info-row" wx:if="{{item.brand}}">
+            <text class="info-label">品牌</text>
+          </view>
+          <text class="info-value">{{item.brand}}</text>
+        </view>
+      </view>
+      <view class="card-tags">
+        <text class="tag-default" wx:if="{{item.isDefault === 1}}">默认车辆</text>
+        <text class="tag-color" wx:if="{{item.color}}">{{item.color}}</text>
+      </view>
+      <view class="card-actions">
+        <view class="action-btn action-edit" catchtap="onEditVehicle" data-item="{{item}}">编辑</view>
+        <view class="action-btn action-delete" wx:if="{{!item.isDefault}}" catchtap="onDeleteVehicle" data-id="{{item.id}}" data-plate="{{item.plateNumber}}">删除</view>
+        <view class="action-btn action-setdefault" wx:if="{{item.isDefault !== 1}}" catchtap="onSetDefault" data-id="{{item.id}}">设默认</view>
+      </view>
+    </view>
+  </block>
+
+  <view wx:else class="empty-wrap">
+    <image class="empty-img" src="/images/my-car.png" mode="aspectFit"></image>
+    <text class="empty-text">暂无车辆</text>
+    <text class="empty-hint">添加车辆后预约时可自动填充车牌号</text>
+    <view class="empty-add-btn" bindtap="goAddVehicle">立即添加车辆</view>
+  </view>
+</view>

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    
+    <!-- 基础Meta标签 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- PWA Meta标签 -->
+    <meta name="theme-color" content="#667eea" />
+    <meta name="application-name" content="智慧停车" />
+    <meta name="description" content="智慧停车位信息管理系统 - 让停车更简单，让出行更便捷" />
+    <meta name="keywords" content="停车,停车位,停车场,智慧停车,停车管理" />
+    <meta name="author" content="智慧停车团队" />
+    
+    <!-- iOS Meta标签 -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="智慧停车" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    
+    <!-- Windows Meta标签 -->
+    <meta name="msapplication-TileColor" content="#667eea" />
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    
+    <!-- Android Meta标签 -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    
+    <!-- 图标链接 -->
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png" />
+    
+    <!-- Apple图标 -->
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png" />
+    <link rel="apple-touch-icon" sizes="167x167" href="/icons/icon-192x192.png" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- 预连接到API服务器 -->
+    <link rel="preconnect" href="http://localhost:8080" />
+    <link rel="dns-prefetch" href="http://localhost:8080" />
+    
+    <!-- 标题 -->
+    <title>智慧停车 - 让停车更简单</title>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://smart-parking.com/" />
+    <meta property="og:title" content="智慧停车 - 让停车更简单" />
+    <meta property="og:description" content="智慧停车位信息管理系统 - 让停车更简单，让出行更便捷" />
+    <meta property="og:image" content="/icons/icon-512x512.png" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://smart-parking.com/" />
+    <meta property="twitter:title" content="智慧停车 - 让停车更简单" />
+    <meta property="twitter:description" content="智慧停车位信息管理系统 - 让停车更简单，让出行更便捷" />
+    <meta property="twitter:image" content="/icons/icon-512x512.png" />
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+    
+    <!-- Service Worker注册 -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then((registration) => {
+              console.log('Service Worker 注册成功:', registration.scope)
+              
+              // 检查更新
+              registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // 新版本可用，提示用户刷新
+                    if (confirm('发现新版本，是否立即更新？')) {
+                      newWorker.postMessage({ type: 'SKIP_WAITING' })
+                      window.location.reload()
+                    }
+                  }
+                })
+              })
+            })
+            .catch((error) => {
+              console.error('Service Worker 注册失败:', error)
+            })
+        })
+      }
+    </script>
+    
+    <!-- NoScript提示 -->
+    <noscript>
+      <div style="padding: 20px; text-align: center; font-family: sans-serif;">
+        <h1>智慧停车</h1>
+        <p>请启用JavaScript以获得最佳体验。</p>
+      </div>
+    </noscript>
+  </body>
+</html>

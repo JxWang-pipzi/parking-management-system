@@ -1,0 +1,97 @@
+<view class="page">
+  <view class="plain-nav" style="padding-top: {{statusBarHeight}}px">
+    <view class="nav-row">
+      <view class="back-btn" bindtap="goBack">‹</view>
+      <text class="title">{{order && order.status === 1 ? '支付成功' : '确认支付'}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{order && order.status === 1}}" class="success-content">
+    <view class="success-icon">✓</view>
+    <text class="success-title">{{isFree ? '免费离场' : '支付成功'}}</text>
+    <text class="success-amount">{{isFree ? '免费' : '¥' + order.amountText}}</text>
+  </view>
+
+  <view wx:if="{{order && order.status !== 1}}" class="amount-content">
+    <text class="pay-amount">{{isFree ? '免费' : '¥' + order.amountText}}</text>
+    <text class="pay-label">{{isFree ? '15分钟免费期内' : '停车费用'}}</text>
+  </view>
+
+  <view wx:if="{{order}}" class="content">
+    <view class="section payment-summary">
+      <view class="info-row">
+        <text class="info-label">停车场</text>
+        <text class="info-value">{{order.parkingLotName || '未知停车场'}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">车牌号</text>
+        <text class="info-value plate">{{order.plateNumber || '--'}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">入场时间</text>
+        <text class="info-value">{{order.startTimeText}}</text>
+      </view>
+      <view wx:if="{{order.status === 1}}" class="info-row">
+        <text class="info-label">出场时间</text>
+        <text class="info-value">{{order.endTimeText}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">停车时长</text>
+        <text class="info-value">{{durationText}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">{{order.status === 1 ? '支付方式' : '计费规则'}}</text>
+        <text class="info-value">{{order.status === 1 ? '微信支付' : '¥' + hourlyRate + '/小时'}}</text>
+      </view>
+      <view wx:if="{{order.status !== 1 && isFree}}" class="info-row">
+        <text class="info-label">优惠</text>
+        <text class="info-value info-green">首次15分钟免费</text>
+      </view>
+      <view wx:if="{{order.status !== 1}}" class="info-row coupon-row">
+        <text class="info-label">优惠券</text>
+        <text class="info-value muted">暂无可用 ›</text>
+      </view>
+      <view wx:if="{{order.status === 1}}" class="info-row">
+        <text class="info-label">订单编号</text>
+        <text class="info-value">{{order.orderNo || order.id}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{order.status === 0 || order.status === 3}}" class="section pay-methods">
+      <text class="section-title">支付方式</text>
+      <view class="info-row">
+        <view class="method-left">
+          <image class="method-icon" src="/images/wechat.png" mode="aspectFit"></image>
+          <text class="info-value">微信支付</text>
+        </view>
+        <text class="radio active">✓</text>
+      </view>
+      <view class="info-row">
+        <view class="method-left">
+          <text class="method-fallback blue">支</text>
+          <text class="info-value">支付宝支付</text>
+        </view>
+        <text class="radio"></text>
+      </view>
+      <view class="info-row">
+        <view class="method-left">
+          <text class="method-fallback gray">卡</text>
+          <text class="info-value">银行卡支付</text>
+        </view>
+        <text class="radio"></text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:else class="empty">
+    <text class="empty-text">订单加载中...</text>
+  </view>
+
+  <view class="bottom-bar" wx:if="{{order && order.status !== 1 && order.status !== 2}}">
+    <button class="primary-btn full-btn" bindtap="payOrder">{{isFree ? '免费离场' : '立即支付'}}</button>
+  </view>
+  <view class="bottom-bar success-actions" wx:if="{{order && order.status === 1}}">
+    <button class="primary-btn full-btn" bindtap="goBack">完成离场</button>
+    <button class="outline-btn full-btn" bindtap="goHome">再停一次</button>
+  </view>
+</view>

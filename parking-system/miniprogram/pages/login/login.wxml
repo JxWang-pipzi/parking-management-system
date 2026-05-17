@@ -1,0 +1,35 @@
+<view class="login-container">
+  <view class="top-spacer"></view>
+
+  <view class="logo-section">
+    <image class="logo-icon" src="/images/logo.png" mode="aspectFit" />
+    <text class="logo-title">智慧停车</text>
+    <text class="logo-subtitle">轻松停车，智慧出行</text>
+  </view>
+
+  <view class="form-section">
+    <view class="form-item">
+      <view class="input-icon">
+        <view class="icon-phone-body">
+          <view class="icon-phone-dot"></view>
+        </view>
+      </view>
+      <input class="form-input" type="number" placeholder="请输入手机号" maxlength="11" bindinput="onPhoneInput" value="{{phone}}" />
+    </view>
+
+    <view class="form-item">
+      <view class="input-icon">
+        <view class="icon-lock-hook"></view>
+        <view class="icon-lock-body"></view>
+      </view>
+      <input class="form-input" password placeholder="请输入密码" bindinput="onPasswordInput" value="{{password}}" />
+    </view>
+
+    <button class="btn-submit" bindtap="handleLogin">登录</button>
+    <button class="btn-wechat" bindtap="onWechatLogin">微信快捷登录</button>
+
+    <view class="switch-mode">
+      <text class="link-text" bindtap="navigateToRegister">还没有账号？立即注册</text>
+    </view>
+  </view>
+</view>

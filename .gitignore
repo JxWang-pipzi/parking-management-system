@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+target/
+build/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+
+# Test
+coverage/
+
+# Java
+*.class
+*.jar
+
+# Temp
+*.tmp
+*.bak
+
+# Python virtual environment (contains large binary files)
+.venv*/
+venv/
+__pycache__/
+*.pyc
+
+# Paddle OCR large files
+plate-ocr-service/
+
+# Large binary files
+*.pyd
+*.dll
+*.so
+*.dylib
+
+# Office temp files
+~$*.docx
+~$*.xlsx
+~$*.pptx

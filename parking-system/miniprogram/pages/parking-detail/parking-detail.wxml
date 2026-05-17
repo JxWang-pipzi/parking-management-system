@@ -1,0 +1,140 @@
+<view class="page">
+  <view class="top-nav" style="padding-top: {{statusBarHeight}}px">
+    <view class="back-btn" bindtap="goBack">
+      <text class="back-arrow">‹</text>
+    </view>
+    <view class="top-actions">
+      <text class="top-icon" bindtap="onFavoriteTap">☆</text>
+      <text class="top-icon">⌯</text>
+    </view>
+  </view>
+
+  <view class="banner-wrap">
+    <image wx:if="{{!bannerError && bannerImage}}" class="banner-img" src="{{bannerImage}}" mode="aspectFill" binderror="onBannerError"></image>
+    <view wx:if="{{bannerError || !bannerImage}}" class="banner-error"></view>
+  </view>
+
+  <scroll-view scroll-y class="main-scroll" style="padding-bottom: calc(140rpx + env(safe-area-inset-bottom))">
+    <view class="info-card">
+      <view class="title-row">
+        <text class="park-name">{{parkingLot.name}}</text>
+        <text class="available-pill">空位充足</text>
+      </view>
+      <view class="meta-line">
+        <text>地下停车场</text>
+        <text>24小时营业</text>
+      </view>
+      <view class="address-row">
+        <text class="price-value">¥{{parkingLot.hourlyRate || 6}}</text>
+        <text class="price-unit">/小时</text>
+        <text class="price-note">封48天 · 月卡¥500 · 2小时内免费</text>
+        <text class="price-more" bindtap="showPriceDetail">价格详情 ›</text>
+      </view>
+    </view>
+
+    <view class="space-card">
+      <text class="section-title">空位情况</text>
+      <view class="space-stats">
+        <view>
+          <text class="stat-label">总车位</text>
+          <text class="stat-value">{{parkingLot.totalSpaces || 1200}}</text>
+        </view>
+        <view>
+          <text class="stat-label">空车位</text>
+          <text class="stat-value">{{parkingLot.availableSpaces || 328}}</text>
+        </view>
+        <view class="big-free">
+          <text>{{parkingLot.availableSpaces || 328}}</text>
+          <text class="big-unit">个</text>
+        </view>
+      </view>
+      <view class="distance-row">
+        <text class="address-text">{{parkingLot.address || '成都市高新区天府大道北段1700号'}}</text>
+        <text class="distance-value">距离 {{parkingLot.distance || '320m'}}｜步行 5分钟</text>
+      </view>
+      <view class="mini-actions">
+        <button class="mini-btn" bindtap="onNavigateTap">导航</button>
+        <button class="mini-btn">路线</button>
+      </view>
+    </view>
+
+    <view class="service-card">
+      <view class="section-head">
+        <text class="section-title">服务设施</text>
+      </view>
+      <view class="service-grid">
+        <view class="service-item">
+          <view class="service-icon icon-available">充</view>
+          <text class="service-name">充电桩</text>
+        </view>
+        <view class="service-item">
+          <view class="service-icon icon-available">洗</view>
+          <text class="service-name">洗车</text>
+        </view>
+        <view class="service-item">
+          <view class="service-icon icon-available">梯</view>
+          <text class="service-name">电梯</text>
+        </view>
+        <view class="service-item">
+          <view class="service-icon icon-available">付</view>
+          <text class="service-name">无感支付</text>
+        </view>
+        <view class="service-item">
+          <view class="service-icon icon-available">泊</view>
+          <text class="service-name">无障碍</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="bottom-bar">
+    <button class="bottom-btn btn-nav" bindtap="onNavigateTap">导航到这里</button>
+    <button class="bottom-btn btn-park" bindtap="onReserveTap">去停车</button>
+  </view>
+
+  <view wx:if="{{showReserveModal}}" class="reserve-overlay" bindtap="onModalCancel">
+    <view class="reserve-modal" catchtap="">
+      <view class="modal-drag-bar"></view>
+      <text class="modal-heading">预约车位</text>
+
+      <block wx:if="{{myVehicles.length > 0}}">
+        <view class="vehicle-selector-label">选择车辆</view>
+        <scroll-view scroll-x class="vehicle-scroll" enhanced show-scrollbar="{{false}}">
+          <view class="vehicle-list">
+            <view
+              class="vehicle-chip {{item.plateNumber === vehiclePlate ? 'active' : ''}}"
+              wx:for="{{myVehicles}}"
+              wx:key="id"
+              data-index="{{index}}"
+              catchtap="onSelectVehicle"
+            >
+              <text class="chip-plate">{{item.plateNumber}}</text>
+              <text class="chip-default-tag" wx:if="{{item.isDefault === 1}}">默认</text>
+            </view>
+          </view>
+        </scroll-view>
+      </block>
+
+      <view class="form-item">
+        <text class="field-title">车牌号</text>
+        <input
+          class="field-input"
+          placeholder="请输入或选择车牌号"
+          value="{{vehiclePlate}}"
+          bindinput="onPlateInput"
+          maxlength="8"
+          focus="{{showReserveModal}}"
+          confirm-type="done"
+        />
+      </view>
+      <view class="form-item">
+        <text class="field-title">费率</text>
+        <text class="field-price">¥{{parkingLot.hourlyRate || 0}}/小时（按实际时长计费）</text>
+      </view>
+      <view class="modal-actions">
+        <button class="modal-btn btn-cancel" bindtap="onModalCancel">取消</button>
+        <button class="modal-btn btn-confirm" bindtap="onModalConfirm" disabled="{{reserving}}">{{reserving ? '预约中...' : '确认预约'}}</button>
+      </view>
+    </view>
+  </view>
+</view>

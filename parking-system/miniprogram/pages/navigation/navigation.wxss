@@ -1,0 +1,293 @@
+.page {
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+.nav {
+  height: 92rpx;
+  padding-left: 24rpx;
+  padding-right: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: content-box;
+}
+
+.back {
+  width: 56rpx;
+  font-size: 48rpx;
+  color: #111827;
+  line-height: 1;
+}
+
+.title {
+  font-size: 28rpx;
+  color: #111827;
+  font-weight: 700;
+}
+
+.exit {
+  width: 56rpx;
+  text-align: right;
+  font-size: 24rpx;
+  color: #00A85A;
+  font-weight: 700;
+}
+
+.map-area {
+  position: relative;
+  height: calc(100vh - 92rpx);
+  overflow: hidden;
+  background:
+    linear-gradient(35deg, transparent 0 44%, rgba(210, 216, 222, .45) 44% 46%, transparent 46%),
+    linear-gradient(125deg, transparent 0 32%, rgba(210, 216, 222, .45) 32% 34%, transparent 34%),
+    #f3f6f8;
+}
+
+.route-card,
+.park-card {
+  position: absolute;
+  left: 16rpx;
+  right: 16rpx;
+  background: #ffffff;
+  border-radius: 18rpx;
+  box-shadow: 0 10rpx 28rpx rgba(15, 23, 42, 0.08);
+  z-index: 5;
+}
+
+.route-card {
+  top: 0;
+  min-height: 172rpx;
+  padding: 28rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+}
+
+.turn-icon {
+  font-size: 64rpx;
+  color: #111827;
+  margin-right: 22rpx;
+  line-height: 1;
+}
+
+.route-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.route-main,
+.route-road {
+  color: #111827;
+  font-size: 28rpx;
+  font-weight: 800;
+}
+
+.route-road {
+  font-size: 25rpx;
+}
+
+.route-arrow {
+  margin-left: auto;
+  font-size: 42rpx;
+  color: #111827;
+}
+
+.route-meta {
+  position: absolute;
+  left: 28rpx;
+  right: 28rpx;
+  bottom: 20rpx;
+  padding-top: 18rpx;
+  border-top: 1rpx solid #E5E7EB;
+  font-size: 22rpx;
+  color: #6B7280;
+}
+
+.street {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1rpx solid #e4e9ee;
+}
+
+.street-a {
+  width: 86rpx;
+  height: 1100rpx;
+  left: 190rpx;
+  top: 100rpx;
+  transform: rotate(35deg);
+}
+
+.street-b {
+  width: 88rpx;
+  height: 1100rpx;
+  right: 110rpx;
+  top: 20rpx;
+  transform: rotate(35deg);
+}
+
+.street-c {
+  width: 1100rpx;
+  height: 78rpx;
+  left: -180rpx;
+  top: 520rpx;
+  transform: rotate(-32deg);
+}
+
+.river {
+  position: absolute;
+  width: 78rpx;
+  height: 1100rpx;
+  right: 88rpx;
+  top: 104rpx;
+  background: rgba(199, 223, 245, 0.75);
+  transform: rotate(26deg);
+}
+
+.polyline {
+  position: absolute;
+  z-index: 2;
+  background: #00A85A;
+  box-shadow: 0 0 0 5rpx rgba(0, 168, 90, .18);
+}
+
+.polyline.one {
+  width: 18rpx;
+  height: 210rpx;
+  left: 322rpx;
+  top: 285rpx;
+  transform: rotate(-30deg);
+}
+
+.polyline.two {
+  width: 18rpx;
+  height: 260rpx;
+  left: 420rpx;
+  top: 420rpx;
+  transform: rotate(40deg);
+}
+
+.polyline.three {
+  width: 18rpx;
+  height: 230rpx;
+  left: 360rpx;
+  top: 610rpx;
+  transform: rotate(-28deg);
+}
+
+.start-dot,
+.end-dot {
+  position: absolute;
+  z-index: 3;
+  width: 64rpx;
+  height: 64rpx;
+  line-height: 64rpx;
+  border-radius: 50%;
+  text-align: center;
+  color: #ffffff;
+  font-size: 24rpx;
+  font-weight: 800;
+}
+
+.start-dot {
+  left: 278rpx;
+  top: 275rpx;
+  background: #00A85A;
+}
+
+.end-dot {
+  left: 404rpx;
+  top: 686rpx;
+  background: #ef4444;
+}
+
+.car-dot {
+  position: absolute;
+  left: 398rpx;
+  top: 644rpx;
+  width: 34rpx;
+  height: 34rpx;
+  border-radius: 50%;
+  background: #111827;
+  z-index: 4;
+  border: 6rpx solid #ffffff;
+}
+
+.locate-btn,
+.refresh-btn {
+  position: absolute;
+  left: 36rpx;
+  z-index: 5;
+  background: #ffffff;
+  box-shadow: 0 8rpx 22rpx rgba(15, 23, 42, 0.12);
+}
+
+.locate-btn {
+  top: 560rpx;
+  width: 82rpx;
+  height: 82rpx;
+  line-height: 82rpx;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 40rpx;
+}
+
+.refresh-btn {
+  top: 656rpx;
+  padding: 18rpx 24rpx;
+  border-radius: 18rpx;
+  color: #111827;
+  font-size: 22rpx;
+}
+
+.park-card {
+  bottom: 36rpx;
+  padding: 28rpx;
+  box-sizing: border-box;
+}
+
+.park-thumb {
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: 10rpx;
+  float: left;
+  margin-right: 18rpx;
+}
+
+.park-info {
+  min-height: 76rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.park-name {
+  color: #111827;
+  font-size: 24rpx;
+  font-weight: 800;
+}
+
+.park-sub {
+  color: #6B7280;
+  font-size: 21rpx;
+  margin-top: 8rpx;
+}
+
+.green {
+  color: #00A85A;
+  font-weight: 800;
+}
+
+.arrival-row {
+  clear: both;
+  display: flex;
+  justify-content: space-between;
+  color: #6B7280;
+  font-size: 22rpx;
+  margin-top: 28rpx;
+}
+
+.time {
+  font-size: 28rpx;
+}

@@ -1,0 +1,82 @@
+<scroll-view scroll-y="{{true}}" class="page" enhanced show-scrollbar="{{false}}" style="height: 100vh">
+  <view class="header" style="padding-top: {{statusBarHeight}}px">
+    <view class="header-top">
+      <view class="location-row" bindtap="onLocationTap">
+        <image class="location-icon" src="/images/location.png" />
+        <text class="location-text">{{locationText || '成都市高新区'}}</text>
+      </view>
+      <view class="msg-btn" bindtap="onMessageTap">
+        <image class="msg-icon" src="/images/about.png" />
+        <view class="msg-dot"></view>
+      </view>
+    </view>
+    <view class="search-bar" bindtap="onSearchTap">
+      <image class="search-icon" src="/images/search.png" />
+      <text class="search-placeholder">搜索目的地 / 停车场</text>
+      <text class="scan-mini">⌖</text>
+    </view>
+  </view>
+
+  <view class="quick-grid">
+    <view class="quick-item" wx:for="{{quickEntries}}" wx:key="type" bindtap="onEntryTap" data-type="{{item.type}}">
+      <view class="quick-icon quick-icon-{{item.theme}}">
+        <text class="quick-icon-glyph">{{item.iconText}}</text>
+      </view>
+      <text class="quick-text">{{item.label}}</text>
+    </view>
+  </view>
+
+  <view class="parking-section">
+    <view class="section-title-row">
+      <text class="section-title">附近停车场</text>
+      <text class="section-more" bindtap="onFilterMore">筛选⌄</text>
+    </view>
+
+    <view class="filter-tabs">
+      <view class="filter-tab {{activeTab === 'distance' ? 'active' : ''}}" bindtap="onFilterTab" data-tab="distance">距离优先</view>
+      <view class="filter-tab {{activeTab === 'price' ? 'active' : ''}}" bindtap="onFilterTab" data-tab="price">价格优先</view>
+      <view class="filter-tab {{activeTab === 'space' ? 'active' : ''}}" bindtap="onFilterTab" data-tab="space">空位优先</view>
+    </view>
+
+    <view wx:if="{{loading}}" class="loading-wrap">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <block wx:elif="{{parkingLots.length > 0}}">
+      <view class="parking-card" wx:for="{{displayList}}" wx:key="id" bindtap="onParkingTap" data-id="{{item.id}}">
+        <view class="card-image-wrap">
+          <image class="card-image" src="{{item.bannerImage}}" mode="aspectFill" binderror="onImageError" data-index="{{index}}" />
+          <view wx:if="{{!item.bannerImage}}" class="card-image-placeholder">
+            <text class="placeholder-text">P</text>
+          </view>
+        </view>
+        <view class="card-content">
+          <view class="card-title-row">
+            <text class="card-name">{{item.name}}</text>
+            <text class="space-tag status-{{item.statusType}}">{{item.statusText}}</text>
+          </view>
+          <view class="card-bottom-row">
+            <text class="card-meta">距离 {{item.distanceText || item.distance}}</text>
+            <text class="card-meta" wx:if="{{item.walkTime && item.validDistance}}">步行 {{item.walkTime}}</text>
+            <text class="card-arrow">›</text>
+          </view>
+          <view class="price-line">
+            <text class="price-symbol">¥</text>
+            <text class="price-value">{{item.hourlyRate}}</text>
+            <text class="price-unit">/小时</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <view wx:else class="empty-wrap">
+      <image class="empty-img" src="/images/empty.png"></image>
+      <text class="empty-text">暂无附近停车场</text>
+    </view>
+
+    <view class="view-all" bindtap="onViewMoreTap">查看全部停车场 ›</view>
+  </view>
+
+  <view class="bottom-safe"></view>
+</scroll-view>

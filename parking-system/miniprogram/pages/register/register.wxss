@@ -1,0 +1,145 @@
+.login-container {
+  min-height: 100vh;
+  background-color: #ffffff;
+  padding: 0 48rpx;
+}
+
+.top-spacer {
+  height: 22vh;
+}
+
+.logo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 80rpx;
+}
+
+.logo-icon {
+  width: 120rpx;
+  height: 120rpx;
+  margin-bottom: 24rpx;
+}
+
+.logo-title {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 16rpx;
+  letter-spacing: 4rpx;
+}
+
+.logo-subtitle {
+  font-size: 26rpx;
+  color: #94a3b8;
+  letter-spacing: 2rpx;
+}
+
+.form-section {
+  width: 100%;
+}
+
+.form-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 28rpx;
+  background-color: #f8fafc;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  height: 96rpx;
+}
+
+.input-icon {
+  width: 36rpx;
+  height: 44rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-phone-body {
+  width: 20rpx;
+  height: 32rpx;
+  border: 3rpx solid #94a3b8;
+  border-radius: 4rpx;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 4rpx;
+}
+
+.icon-phone-dot {
+  width: 6rpx;
+  height: 6rpx;
+  border-radius: 50%;
+  background-color: #94a3b8;
+}
+
+.icon-lock-hook {
+  width: 14rpx;
+  height: 10rpx;
+  border: 3rpx solid #94a3b8;
+  border-bottom: none;
+  border-radius: 8rpx 8rpx 0 0;
+  margin-bottom: -2rpx;
+}
+
+.icon-lock-body {
+  width: 24rpx;
+  height: 18rpx;
+  border: 3rpx solid #94a3b8;
+  border-radius: 4rpx;
+}
+
+.icon-shield-top {
+  width: 0;
+  height: 0;
+  border-left: 12rpx solid transparent;
+  border-right: 12rpx solid transparent;
+  border-bottom: 8rpx solid #94a3b8;
+}
+
+.icon-shield-body {
+  width: 22rpx;
+  height: 20rpx;
+  border: 3rpx solid #94a3b8;
+  border-top: none;
+  border-radius: 0 0 6rpx 6rpx;
+}
+
+.form-input {
+  flex: 1;
+  height: 100%;
+  font-size: 28rpx;
+  color: #1a1a1a;
+}
+
+.btn-submit {
+  background-color: #18B566;
+  color: #ffffff;
+  border-radius: 44rpx;
+  height: 88rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-top: 40rpx;
+  line-height: 88rpx;
+  width: 100%;
+}
+
+.btn-submit::after {
+  border: none;
+}
+
+.switch-mode {
+  display: flex;
+  justify-content: center;
+  margin-top: 40rpx;
+}
+
+.link-text {
+  color: #18B566;
+  font-size: 26rpx;
+}
