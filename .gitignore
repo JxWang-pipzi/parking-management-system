@@ -49,3 +49,12 @@ plate-ocr-service/
 ~$*.docx
 ~$*.xlsx
 ~$*.pptx
+
+# Trae documents
+.trae/documents/
+
+# Personal/private documents
+*.docx
+保姆级启动教程.md
+开题报告*
+screenshot-*.png
