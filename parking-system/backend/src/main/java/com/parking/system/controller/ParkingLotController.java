@@ -7,6 +7,7 @@ import com.parking.system.service.ParkingLotService;
 import com.parking.system.service.ParkingSpaceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/parking-lots")
 @Api(tags = "停车场管理")
@@ -31,17 +33,21 @@ public class ParkingLotController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Double latitude,
             @RequestParam(required = false) Double longitude) {
+        log.info("[成功][阶段2][获取停车场列表] 时间：{} | 参数：name={}, lat={}, lng={}", System.currentTimeMillis(), name, latitude, longitude);
         List<ParkingLot> parkingLots = parkingLotService.listParkingLots(latitude, longitude);
+        log.info("[成功][阶段4][返回停车场列表] 时间：{} | 结果：共{}个", System.currentTimeMillis(), parkingLots.size());
         return Response.success("获取成功", parkingLots);
     }
 
     @GetMapping("/{id}")
     @ApiOperation("获取停车场详情")
     public Response<ParkingLot> getParkingLot(@PathVariable Long id) {
+        log.info("[成功][阶段2][获取停车场详情] 时间：{} | 参数：id={}", System.currentTimeMillis(), id);
         ParkingLot parkingLot = parkingLotService.getParkingLotWithSpaces(id);
         if (parkingLot != null) {
             return Response.success("获取成功", parkingLot);
         }
+        log.warn("[失败][阶段4][停车场不存在] 时间：{} | 参数：id={}", System.currentTimeMillis(), id);
         return Response.error("停车场不存在");
     }
 

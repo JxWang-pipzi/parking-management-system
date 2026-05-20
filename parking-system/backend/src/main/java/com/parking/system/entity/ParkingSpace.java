@@ -43,4 +43,7 @@ public class ParkingSpace implements Serializable {
     @TableField(exist = false)
     private String reservationStatus; // 预约状态：ACTIVE, EXPIRED, CANCELLED, USED
 
+    @TableField(exist = false)
+    private String parkingLotName;
+
 }

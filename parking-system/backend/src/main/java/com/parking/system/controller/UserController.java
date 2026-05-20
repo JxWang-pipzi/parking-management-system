@@ -29,6 +29,9 @@ public class UserController {
     @Resource
     private JwtUtil jwtUtil;
 
+    @Resource
+    private com.parking.system.service.OrderService orderService;
+
     private User sanitizeUser(User user) {
         if (user == null) return null;
         User sanitized = new User();
@@ -85,13 +88,23 @@ public class UserController {
     @ApiOperation("获取用户统计信息")
     public Response<Map<String, Object>> getUserStats() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = auth.getPrincipal();
         log.info("[成功][阶段2][获取用户统计] 时间：{} | 参数：用户={}", System.currentTimeMillis(), auth.getName());
 
         Map<String, Object> stats = new HashMap<>();
-        stats.put("balance", 100.00);
-        stats.put("points", 50);
-        stats.put("coupons", 2);
-        stats.put("orders", 10);
+        if (principal instanceof Long) {
+            Long userId = (Long) principal;
+            com.baomidou.mybatisplus.core.conditions.query.QueryWrapper<com.parking.system.entity.Order> queryWrapper =
+                new com.baomidou.mybatisplus.core.conditions.query.QueryWrapper<>();
+            queryWrapper.eq("user_id", userId);
+            long orderCount = orderService.count(queryWrapper);
+            stats.put("orders", orderCount);
+        } else {
+            stats.put("orders", 0);
+        }
+        stats.put("balance", 0);
+        stats.put("points", 0);
+        stats.put("coupons", 0);
 
         log.info("[成功][阶段4][返回统计数据] 时间：{} | 结果：{}", System.currentTimeMillis(), stats);
         return Response.success(stats);
@@ -333,6 +346,11 @@ public class UserController {
             Long userId = (Long) principal;
             String oldPassword = (String) params.get("oldPassword");
             String newPassword = (String) params.get("newPassword");
+
+            if (newPassword == null || newPassword.length() < 6) {
+                log.warn("[失败][阶段2][修改密码] 时间：{} | 原因：新密码长度不足", System.currentTimeMillis());
+                return Response.error("新密码长度至少为6位");
+            }
 
             User user = userService.getById(userId);
             if (user != null && userService.login(user.getUsername(), oldPassword) != null) {

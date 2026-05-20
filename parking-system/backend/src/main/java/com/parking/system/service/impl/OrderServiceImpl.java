@@ -149,6 +149,56 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     @Transactional
+    public Order createReservationOrder(Long userId, Long parkingLotId, Long parkingSpaceId) {
+        String time = getCurrentTime();
+
+        log.info("[成功][阶段1-入口][创建预约订单] 时间：{} | 参数：userId={}, parkingLotId={}, parkingSpaceId={} | 开始创建预约订单",
+                time, userId, parkingLotId, parkingSpaceId);
+
+        try {
+            Order order = new Order();
+            order.setUserId(userId);
+            order.setParkingLotId(parkingLotId);
+            order.setParkingSpaceId(parkingSpaceId);
+            order.setPlateNumber("");
+            order.setStartTime(new Date());
+            order.setStatus(0);
+            order.setAmount(new java.math.BigDecimal(0));
+
+            if (save(order)) {
+                parkingLotService.updateAvailableSpaces(parkingLotId, -1);
+
+                webSocketService.pushSystemBroadcast("预约订单创建", Map.of(
+                    "orderId", order.getId(),
+                    "userId", userId,
+                    "parkingLotId", parkingLotId,
+                    "parkingSpaceId", parkingSpaceId,
+                    "type", "ORDER_CREATED"
+                ));
+                ParkingWebSocketHandler.pushOrderUpdate(userId, Map.of(
+                    "orderId", order.getId(),
+                    "status", 0,
+                    "type", "ORDER_CREATED",
+                    "parkingLotId", parkingLotId
+                ));
+
+                log.info("[成功][阶段4-结果反馈][创建预约订单] 时间：{} | 参数：userId={}, parkingLotId={} | 结果：预约订单创建成功，orderId={}",
+                        time, userId, parkingLotId, order.getId());
+                return order;
+            }
+
+            log.warn("[失败][阶段4-结果反馈][创建预约订单] 时间：{} | 原因：订单保存失败 | 参数：userId={}, parkingLotId={}",
+                    time, userId, parkingLotId);
+            return null;
+        } catch (Exception e) {
+            log.error("[失败][阶段2-核心操作][创建预约订单] 时间：{} | 原因：{} | 参数：userId={}, parkingLotId={}",
+                    time, e.getMessage(), userId, parkingLotId);
+            throw e;
+        }
+    }
+
+    @Override
+    @Transactional
     public boolean payOrder(Long orderId, Integer paymentMethod) {
         String time = getCurrentTime();
         

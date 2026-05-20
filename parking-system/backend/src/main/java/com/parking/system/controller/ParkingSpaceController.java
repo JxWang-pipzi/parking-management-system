@@ -2,7 +2,11 @@ package com.parking.system.controller;
 
 import com.parking.system.common.Response;
 import com.parking.system.config.ParkingWebSocketHandler;
+import com.parking.system.entity.Order;
+import com.parking.system.entity.ParkingLot;
 import com.parking.system.entity.ParkingSpace;
+import com.parking.system.service.OrderService;
+import com.parking.system.service.ParkingLotService;
 import com.parking.system.service.ParkingSpaceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,10 +27,24 @@ public class ParkingSpaceController {
     @Resource
     private ParkingSpaceService parkingSpaceService;
 
+    @Resource
+    private OrderService orderService;
+
+    @Resource
+    private ParkingLotService parkingLotService;
+
     @GetMapping
     @ApiOperation("获取所有车位")
     public Response<List<ParkingSpace>> getAllParkingSpaces() {
         List<ParkingSpace> spaces = parkingSpaceService.list();
+        for (ParkingSpace space : spaces) {
+            if (space.getParkingLotId() != null) {
+                ParkingLot lot = parkingLotService.getById(space.getParkingLotId());
+                if (lot != null) {
+                    space.setParkingLotName(lot.getName());
+                }
+            }
+        }
         return Response.success(spaces);
     }
 
@@ -52,6 +70,17 @@ public class ParkingSpaceController {
         Long userId = (Long) principal;
         log.info("[成功][阶段2][预约车位] 时间：{} | 参数：spaceId={}, userId={}", System.currentTimeMillis(), id, userId);
         if (parkingSpaceService.reserveParkingSpace(id, userId)) {
+            ParkingSpace space = parkingSpaceService.getById(id);
+            if (space != null) {
+                Order order = orderService.createReservationOrder(userId, space.getParkingLotId(), id);
+                if (order != null) {
+                    log.info("[成功][阶段4][预约车位] 时间：{} | 参数：spaceId={}, userId={} | 结果：预约成功，订单号={}", 
+                            System.currentTimeMillis(), id, userId, order.getId());
+                } else {
+                    log.warn("[失败][阶段4][预约车位] 时间：{} | 原因：订单创建失败 | 参数：spaceId={}, userId={}", 
+                            System.currentTimeMillis(), id, userId);
+                }
+            }
             return Response.success("预约成功");
         }
         return Response.error("预约失败，车位可能已被占用");
@@ -60,7 +89,14 @@ public class ParkingSpaceController {
     @PostMapping("/{id}/release")
     @ApiOperation("释放车位")
     public Response<?> releaseParkingSpace(@PathVariable Long id) {
-        log.info("[成功][阶段2][释放车位] 时间：{} | 参数：spaceId={}", System.currentTimeMillis(), id);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = auth.getPrincipal();
+        if (!(principal instanceof Long)) {
+            log.warn("[失败][阶段2][释放车位] 时间：{} | 原因：未登录", System.currentTimeMillis());
+            return Response.error("未登录");
+        }
+        Long userId = (Long) principal;
+        log.info("[成功][阶段2][释放车位] 时间：{} | 参数：spaceId={}, userId={}", System.currentTimeMillis(), id, userId);
         if (parkingSpaceService.releaseParkingSpace(id)) {
             return Response.success("释放成功");
         }

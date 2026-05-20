@@ -9,6 +9,8 @@ public interface OrderService extends IService<Order> {
 
     Order createOrder(Long userId, Long parkingLotId, Long parkingSpaceId, String plateNumber);
 
+    Order createReservationOrder(Long userId, Long parkingLotId, Long parkingSpaceId);
+
     boolean payOrder(Long orderId, Integer paymentMethod);
 
     boolean cancelOrder(Long orderId);

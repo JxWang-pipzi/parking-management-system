@@ -108,6 +108,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Response<?> handleException(Exception e, HttpServletRequest request) {
         logger.error("未知异常: URI={}", request.getRequestURI(), e);
-        return Response.error("系统内部错误: " + e.getMessage());
+        return Response.error("系统内部错误，请稍后重试");
     }
 }
