@@ -271,14 +271,14 @@ const registerForm = reactive({
 
 const registerRules = {
   username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' }
+    { required: true, message: '请输入用户名', trigger: ['blur', 'change'] }
   ],
   password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, message: '密码长度至少为6位', trigger: 'blur' }
+    { required: true, message: '请输入密码', trigger: ['blur', 'change'] },
+    { min: 6, message: '密码长度至少为6位', trigger: ['blur', 'change'] }
   ],
   confirmPassword: [
-    { required: true, message: '请确认密码', trigger: 'blur' },
+    { required: true, message: '请确认密码', trigger: ['blur', 'change'] },
     {
       validator: (rule, value, callback) => {
         if (value !== registerForm.password) {
@@ -287,18 +287,18 @@ const registerRules = {
           callback()
         }
       },
-      trigger: 'blur'
+      trigger: ['blur', 'change']
     }
   ],
   name: [
-    { required: true, message: '请输入真实姓名', trigger: 'blur' }
+    { required: true, message: '请输入真实姓名', trigger: ['blur', 'change'] }
   ],
   phone: [
-    { required: true, message: '请输入手机号码', trigger: 'blur' }
+    { required: true, message: '请输入手机号码', trigger: ['blur', 'change'] }
   ],
   email: [
-    { required: true, message: '请输入邮箱', trigger: 'blur' },
-    { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
+    { required: true, message: '请输入邮箱', trigger: ['blur', 'change'] },
+    { type: 'email', message: '请输入正确的邮箱格式', trigger: ['blur', 'change'] }
   ]
 }
 
