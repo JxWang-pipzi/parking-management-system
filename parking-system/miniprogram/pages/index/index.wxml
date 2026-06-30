@@ -2,8 +2,9 @@
   <view class="header" style="padding-top: {{statusBarHeight}}px">
     <view class="header-top">
       <view class="location-row" bindtap="onLocationTap">
-        <image class="location-icon" src="/images/location.png" />
+        <text class="location-prefix">定位</text>
         <text class="location-text">{{locationText || '成都市高新区'}}</text>
+        <text class="location-arrow">›</text>
       </view>
       <view class="msg-btn" bindtap="onMessageTap">
         <image class="msg-icon" src="/images/about.png" />
@@ -11,16 +12,16 @@
       </view>
     </view>
     <view class="search-bar" bindtap="onSearchTap">
-      <image class="search-icon" src="/images/search.png" />
+      <view class="search-symbol"></view>
       <text class="search-placeholder">搜索目的地 / 停车场</text>
-      <text class="scan-mini">⌖</text>
+      <text class="scan-mini" catchtap="onScanTap">扫码</text>
     </view>
   </view>
 
   <view class="quick-grid">
     <view class="quick-item" wx:for="{{quickEntries}}" wx:key="type" bindtap="onEntryTap" data-type="{{item.type}}">
-      <view class="quick-icon quick-icon-{{item.theme}}">
-        <text class="quick-icon-glyph">{{item.iconText}}</text>
+      <view class="quick-icon">
+        <image class="quick-icon-img" src="{{item.icon}}" mode="aspectFit"></image>
       </view>
       <text class="quick-text">{{item.label}}</text>
     </view>
@@ -75,7 +76,7 @@
       <text class="empty-text">暂无附近停车场</text>
     </view>
 
-    <view class="view-all" bindtap="onViewMoreTap">查看全部停车场 ›</view>
+    <view class="view-all" bindtap="onViewMoreTap">发现更多停车场 ›</view>
   </view>
 
   <view class="bottom-safe"></view>

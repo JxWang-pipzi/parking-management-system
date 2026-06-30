@@ -15,20 +15,22 @@ Page({
     reserving: false,
     bannerError: false,
     defaultVehicle: null,
-    myVehicles: []
+    myVehicles: [],
+    basicInfoOnly: false
   },
 
   onLoad(options) {
     const sysInfo = wx.getSystemInfoSync()
     this.setData({ statusBarHeight: sysInfo.statusBarHeight || 20 })
     const id = options.id || options.code
+    const basicInfoOnly = options.mode === 'basic'
     if (!id) {
       console.log('[失败][阶段1][页面加载] 时间：' + Date.now() + ' | 原因：缺少停车场id参数 | 参数：' + JSON.stringify(options))
       showError('参数错误')
       return
     }
     console.log('[成功][阶段1][页面加载] 时间：' + Date.now() + ' | 参数：id=' + id + ' | 结果：页面初始化成功')
-    this.setData({ id })
+    this.setData({ id, basicInfoOnly })
     this.loadParkingDetail()
   },
 
@@ -37,7 +39,7 @@ Page({
     showLoading('加载中...')
     try {
       const res = await get('/parking-lots/' + id)
-      const lot = res.data
+      const lot = res.data || {}
       const rating = lot.rating || 4.8
       const fullStars = Math.floor(rating)
       const total = lot.totalSpaces || 0
@@ -72,7 +74,9 @@ Page({
       showError('加载停车场信息失败')
       console.log('[失败][阶段2][获取停车场详情] 时间：' + Date.now() + ' | 原因：' + (error.message || '网络异常') + ' | 参数：id=' + id)
     }
-    this.loadMyVehicles()
+    if (!this.data.basicInfoOnly) {
+      this.loadMyVehicles()
+    }
   },
 
   async loadMyVehicles() {
@@ -105,6 +109,10 @@ Page({
   },
 
   onReserveTap() {
+    if (this.data.basicInfoOnly) {
+      this.onNavigateTap()
+      return
+    }
     if (!app.isLoggedIn()) {
       console.log('[失败][阶段3][预约入口] 时间：' + Date.now() + ' | 原因：用户未登录 | 参数：无')
       wx.navigateTo({ url: '/pages/login/login' })
@@ -229,6 +237,15 @@ Page({
   },
 
   showPriceDetail() {
+    if (this.data.basicInfoOnly) {
+      wx.showModal({
+        title: '停车场信息',
+        content: '当前页面仅展示周边停车场基础信息和导航。停车缴费以订单页面和后端订单数据为准。',
+        showCancel: false,
+        confirmText: '我知道了'
+      })
+      return
+    }
     const { parkingLot } = this.data
     wx.showModal({
       title: '价格详情',

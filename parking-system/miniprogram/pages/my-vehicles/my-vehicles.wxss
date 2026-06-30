@@ -7,22 +7,24 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24rpx 32rpx;
+  padding: 0 32rpx 24rpx;
   background-color: #ffffff;
+  gap: 20rpx;
 }
 
 .header-title {
   font-size: 36rpx;
   font-weight: 700;
   color: #1a1a1a;
+  flex: 1;
 }
 
 .header-add {
   font-size: 28rpx;
-  color: #18B566;
+  color: #07C160;
   font-weight: 600;
   padding: 8rpx 20rpx;
-  border: 2rpx solid #18B566;
+  border: 2rpx solid #07C160;
   border-radius: 28rpx;
 }
 
@@ -37,7 +39,7 @@
   width: 48rpx;
   height: 48rpx;
   border: 4rpx solid #e2e8f0;
-  border-top-color: #18B566;
+  border-top-color: #07C160;
   border-radius: 50%;
   animation: spin 0.75s linear infinite;
   margin-bottom: 16rpx;
@@ -68,7 +70,7 @@
 }
 
 .plate-box {
-  background: linear-gradient(135deg, #18B566 0%, #15a05a 100%);
+  background: linear-gradient(135deg, #07C160 0%, #05A954 100%);
   border-radius: 16rpx;
   padding: 20rpx 28rpx;
   min-width: 200rpx;
@@ -108,8 +110,8 @@
 
 .tag-default {
   font-size: 22rpx;
-  color: #18B566;
-  background-color: rgba(24, 181, 102, 0.12);
+  color: #07C160;
+  background-color: rgba(7, 193, 96, 0.12);
   padding: 6rpx 16rpx;
   border-radius: 8rpx;
   font-weight: 600;
@@ -151,8 +153,8 @@
 }
 
 .action-setdefault {
-  color: #18B566;
-  background-color: rgba(24, 181, 102, 0.08);
+  color: #07C160;
+  background-color: rgba(7, 193, 96, 0.08);
 }
 
 .empty-wrap {
@@ -183,10 +185,19 @@
 }
 
 .empty-add-btn {
-  background-color: #18B566;
+  background-color: #07C160;
   color: #ffffff;
   font-size: 28rpx;
   font-weight: 600;
   padding: 22rpx 60rpx;
   border-radius: 44rpx;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.empty-add-icon {
+  width: 40rpx;
+  height: 40rpx;
+  flex-shrink: 0;
 }

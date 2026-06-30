@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
   servlet:
     context-path: /api
 
@@ -46,7 +46,7 @@ swagger:
   enabled: true
 
 jwt:
-  secret: ${JWT_SECRET:}
+  secret: ${JWT_SECRET:change-me-jwt-secret-key-must-be-at-least-256-bits-long}
   expiration: 86400000
   refresh-expiration: 604800000
 

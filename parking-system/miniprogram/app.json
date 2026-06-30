@@ -16,7 +16,7 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#18B566",
+    "navigationBarBackgroundColor": "#07C160",
     "navigationBarTitleText": "智慧停车",
     "navigationBarTextStyle": "white",
     "navigationStyle": "custom"
@@ -24,7 +24,7 @@
   "tabBar": {
     "custom": true,
     "color": "#999999",
-    "selectedColor": "#18B566",
+    "selectedColor": "#07C160",
     "backgroundColor": "#ffffff",
     "borderStyle": "white",
     "list": [
@@ -60,7 +60,8 @@
     }
   },
   "requiredPrivateInfos": [
-    "getLocation"
+    "getLocation",
+    "chooseLocation"
   ],
   "style": "v2",
   "sitemapLocation": "sitemap.json"

@@ -1,14 +1,17 @@
 const app = getApp()
 const { post } = require('../../utils/request')
-const { showLoading, hideLoading, showSuccess, showError, isValidPhone } = require('../../utils/util')
+const { showLoading, hideLoading, showSuccess, showError, isValidPhone, safeNavigateBack } = require('../../utils/util')
 
 Page({
   data: {
+    statusBarHeight: 20,
     phone: '',
     password: ''
   },
 
   onLoad(options) {
+    const sysInfo = wx.getSystemInfoSync()
+    this.setData({ statusBarHeight: sysInfo.statusBarHeight || 20 })
     console.log('[成功][阶段1][页面加载] 时间：' + Date.now() + ' | 参数：' + JSON.stringify(options) + ' | 结果：登录页加载完成')
     if (app.isLoggedIn()) {
       console.log('[成功][阶段1][登录检查] 时间：' + Date.now() + ' | 参数：无 | 结果：已登录，跳转首页')
@@ -35,6 +38,10 @@ Page({
     wx.navigateTo({
       url: '/pages/register/register'
     })
+  },
+
+  goBack() {
+    safeNavigateBack({ fallbackUrl: '/pages/index/index' })
   },
 
   async onWechatLogin(e) {
@@ -75,7 +82,11 @@ Page({
         province: profile.userInfo.province
       })
 
-      app.setUserInfo(res.data.user, res.data.token)
+      var user = Object.assign({}, res.data.user || {})
+      user.name = profile.userInfo.nickName || user.name || '微信用户'
+      user.avatar = profile.userInfo.avatarUrl || user.avatar || ''
+      user.wxIdentity = user.username || ''
+      app.setUserInfo(user, res.data.token)
       console.log('[成功][阶段4][微信登录] 时间：' + Date.now() + ' | 参数：code=' + code + ' | 结果：登录成功，userId=' + (res.data.user.id || 'unknown'))
       showSuccess('登录成功')
 

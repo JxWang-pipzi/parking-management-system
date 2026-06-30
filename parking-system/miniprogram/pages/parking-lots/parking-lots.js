@@ -1,6 +1,75 @@
 const { get } = require('../../utils/request')
 const wsManager = require('../../utils/websocket')
 
+const NEARBY_RADIUS_METERS = 5000
+
+function toRad(value) {
+  return value * Math.PI / 180
+}
+
+function calcStraightDistanceMeters(from, lot) {
+  var lat = Number(lot.latitude || lot.lat)
+  var lng = Number(lot.longitude || lot.lng)
+  if (!from || !lat || !lng) return 0
+  var earthRadius = 6371000
+  var dLat = toRad(lat - from.latitude)
+  var dLng = toRad(lng - from.longitude)
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(from.latitude)) * Math.cos(toRad(lat)) *
+    Math.sin(dLng / 2) * Math.sin(dLng / 2)
+  return Math.round(earthRadius * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)))
+}
+
+function formatDistance(meters) {
+  if (!meters) return '未知距离'
+  return meters >= 1000 ? (meters / 1000).toFixed(meters >= 10000 ? 0 : 1) + '公里' : meters + '米'
+}
+
+function normalizeParkingLots(rawList, location, options) {
+  var strictRadius = options && options.strictRadius
+  const banners = ['/images/parking_building.jpg', '/images/parking_underground.jpg', '/images/parking_outdoor.jpg']
+  return (rawList || []).map(lot => {
+    const validDistance = !!(lot.routeDistanceMeters || lot.routeDistanceText)
+    var straightDistance = calcStraightDistanceMeters(location, lot)
+    const distance = lot.routeDistanceMeters || (typeof lot.distance === 'number' ? lot.distance : straightDistance)
+    var finalValidDistance = validDistance
+    var distText = lot.routeDistanceText || (validDistance ? formatDistance(distance) : '未知距离')
+    if (!finalValidDistance && straightDistance) {
+      finalValidDistance = true
+      distText = formatDistance(straightDistance)
+    }
+    const avail = lot.availableSpaces || 0
+    const total = lot.totalSpaces || 1
+    const ratio = avail / total
+    let statusType = 'plenty'
+    let statusText = '空位充足'
+    if (avail <= 0) {
+      statusType = 'full'
+      statusText = '已满'
+    } else if (ratio < 0.2) {
+      statusType = 'scarce'
+      statusText = '空位紧张'
+    } else if (ratio < 0.5) {
+      statusType = 'normal'
+      statusText = '空位较少'
+    }
+    var hash = 0
+    var name = lot.name || ''
+    for (var i = 0; i < name.length; i++) { hash = ((hash << 5) - hash) + name.charCodeAt(i); hash = hash & hash }
+    var bannerImage = banners[Math.abs(hash) % banners.length]
+    return {
+      ...lot,
+      distance: distText,
+      distanceValue: distance || Number.MAX_SAFE_INTEGER,
+      validDistance: finalValidDistance,
+      statusType: statusType,
+      statusText: statusText,
+      walkTime: lot.routeDurationText || '',
+      bannerImage: bannerImage
+    }
+  }).filter(lot => !strictRadius || (lot.validDistance && lot.distanceValue <= NEARBY_RADIUS_METERS))
+}
+
 Page({
   data: {
     statusBarHeight: 20,
@@ -69,7 +138,8 @@ Page({
         this.setData({
           location: {
             latitude: 30.5728,
-            longitude: 104.0668
+            longitude: 104.0668,
+            isFallback: true
           }
         })
         this.fetchParkingLots()
@@ -87,46 +157,21 @@ Page({
     console.log('[成功][阶段2][请求停车场] 时间：' + Date.now() + ' | 参数：/parking-lots | 结果：开始请求')
 
     try {
-      const res = await get('/parking-lots', {
+      const res = await get('/parking-lots/nearby', {
         latitude: location.latitude,
-        longitude: location.longitude
+        longitude: location.longitude,
+        radius: NEARBY_RADIUS_METERS
       })
 
-        const banners = ['/images/parking_building.jpg', '/images/parking_underground.jpg', '/images/parking_outdoor.jpg']
-        const parkingLots = (res.data || []).map(lot => {
-          const validDistance = !!(lot.routeDistanceMeters || lot.routeDistanceText)
-          const distance = lot.routeDistanceMeters || (typeof lot.distance === 'number' ? lot.distance : 0)
-          const distText = lot.routeDistanceText || (validDistance ? distance + '米' : '未知距离')
-          const avail = lot.availableSpaces || 0
-          const total = lot.totalSpaces || 1
-          const ratio = avail / total
-        let statusType = 'plenty'
-        let statusText = '空位充足'
-        if (avail <= 0) {
-          statusType = 'full'
-          statusText = '已满'
-        } else if (ratio < 0.2) {
-          statusType = 'scarce'
-          statusText = '空位紧张'
-        } else if (ratio < 0.5) {
-          statusType = 'normal'
-          statusText = '空位较少'
-        }
-          var hash = 0
-          var name = lot.name || ''
-          for (var i = 0; i < name.length; i++) { hash = ((hash << 5) - hash) + name.charCodeAt(i); hash = hash & hash }
-          var bannerImage = banners[Math.abs(hash) % banners.length]
-          return {
-            ...lot,
-            distance: distText,
-            distanceValue: distance,
-            validDistance: validDistance,
-            statusType: statusType,
-            statusText: statusText,
-            walkTime: lot.routeDurationText || '',
-            bannerImage: bannerImage
-          }
+      var parkingLots = normalizeParkingLots(res.data || [], location, { strictRadius: !location.isFallback })
+      if (parkingLots.length === 0) {
+        console.log('[成功][阶段2][附近停车场为空] 时间：' + Date.now() + ' | 参数：radius=' + NEARBY_RADIUS_METERS + ' | 结果：回退旧列表接口')
+        var fallbackRes = await get('/parking-lots', {
+          latitude: location.latitude,
+          longitude: location.longitude
         })
+        parkingLots = normalizeParkingLots(fallbackRes.data || [], location, { strictRadius: false })
+      }
 
       console.log('[成功][阶段2][请求停车场] 时间：' + Date.now() + ' | 参数：/parking-lots | 结果：获取' + parkingLots.length + '条数据')
       this.setData({ parkingLots, loading: false })
@@ -195,7 +240,7 @@ Page({
     const id = e.currentTarget.dataset.id
     console.log('[成功][阶段2][跳转详情] 时间：' + Date.now() + ' | 参数：id=' + id + ' | 结果：跳转至详情页')
     wx.navigateTo({
-      url: '/pages/parking-detail/parking-detail?id=' + id
+      url: '/pages/parking-detail/parking-detail?id=' + id + '&mode=basic'
     })
   },
 

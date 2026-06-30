@@ -4,12 +4,15 @@ const { showLoading, hideLoading, showSuccess, showError, isValidPhone, safeNavi
 
 Page({
   data: {
+    statusBarHeight: 20,
     phone: '',
     password: '',
     confirmPassword: ''
   },
 
   onLoad() {
+    const sysInfo = wx.getSystemInfoSync()
+    this.setData({ statusBarHeight: sysInfo.statusBarHeight || 20 })
     console.log('[成功][阶段1][注册页加载] 时间：' + Date.now() + ' | 结果：注册页加载完成')
     if (app.isLoggedIn()) {
       wx.reLaunch({
@@ -31,6 +34,10 @@ Page({
   },
 
   navigateToLogin() {
+    safeNavigateBack({ fallbackUrl: '/pages/login/login' })
+  },
+
+  goBack() {
     safeNavigateBack({ fallbackUrl: '/pages/login/login' })
   },
 

@@ -1,7 +1,9 @@
 const app = getApp()
+const { safeNavigateBack } = require('../../utils/util')
 
 Page({
   data: {
+    statusBarHeight: 20,
     envVersion: 'develop',
     defaultBaseUrl: '',
     currentBaseUrl: '',
@@ -14,13 +16,13 @@ Page({
       {
         key: 'local',
         name: '本机模拟器',
-        url: 'http://127.0.0.1:8080/api',
+        url: 'http://127.0.0.1:8081/api',
         desc: '仅适合开发者工具模拟器，不适合手机真机'
       },
       {
         key: 'lan-template',
         name: '局域网示例',
-        url: 'http://192.168.1.8:8080/api',
+        url: 'http://192.168.1.8:8081/api',
         desc: '改成当前电脑的局域网 IPv4，适合同一 Wi-Fi 真机调试'
       },
       {
@@ -33,18 +35,24 @@ Page({
   },
 
   onLoad() {
-    var envVersion = __wxConfig ? __wxConfig.envVersion : 'develop'
+    var sysInfo = wx.getSystemInfoSync()
+    var envVersion = typeof __wxConfig !== 'undefined' && __wxConfig ? __wxConfig.envVersion : 'develop'
     var defaultBaseUrl = app.getDefaultBaseUrl()
     var currentBaseUrl = app.getBaseUrl()
     var overrideBaseUrl = wx.getStorageSync('baseUrlOverride') || ''
     this.setData({
       envVersion: envVersion,
+      statusBarHeight: sysInfo.statusBarHeight || 20,
       defaultBaseUrl: defaultBaseUrl,
       currentBaseUrl: currentBaseUrl,
       customBaseUrl: overrideBaseUrl || currentBaseUrl,
       baseUrlOverride: overrideBaseUrl
     })
     console.log('[成功][阶段1][接口设置页加载] 时间：' + Date.now() + ' | 参数：baseUrl=' + currentBaseUrl)
+  },
+
+  goBack() {
+    safeNavigateBack({ fallbackUrl: '/pages/profile/profile' })
   },
 
   onCustomInput(e) {
@@ -196,13 +204,13 @@ Page({
       for (var j = start; j < end; j++) {
         ;(function (probeIp, probeSubnet) {
           wx.request({
-            url: 'http://' + probeIp + ':8080/api/parking-lots',
+            url: 'http://' + probeIp + ':8081/api/parking-lots',
             method: 'GET',
             timeout: 2000,
             success: function (res) {
               if (!found && res.statusCode === 200) {
                 found = true
-                var foundUrl = 'http://' + probeIp + ':8080/api'
+                var foundUrl = 'http://' + probeIp + ':8081/api'
                 wx.hideLoading()
                 that.setData({
                   probing: false,

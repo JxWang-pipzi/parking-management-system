@@ -49,16 +49,14 @@
 }
 
 .back-btn {
-  width: 56rpx;
-  height: 56rpx;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .back-arrow {
-  font-size: 48rpx;
-  color: #111827;
+  font-size: 42rpx;
+  color: inherit;
   font-weight: 300;
   line-height: 1;
 }
@@ -86,24 +84,24 @@
 
 .park-name {
   display: block;
-  font-size: 29rpx;
+  font-size: 34rpx;
   font-weight: 700;
   color: #111827;
 }
 
 .available-pill {
-  color: #08a95c;
+  color: #07a85a;
   background: #e9f8f0;
   border-radius: 6rpx;
-  padding: 4rpx 10rpx;
-  font-size: 20rpx;
+  padding: 6rpx 12rpx;
+  font-size: 24rpx;
 }
 
 .meta-line {
   display: flex;
   gap: 24rpx;
   color: #8a94a2;
-  font-size: 22rpx;
+  font-size: 26rpx;
   margin-top: 12rpx;
 }
 
@@ -116,28 +114,34 @@
 }
 
 .price-value {
-  font-size: 36rpx;
+  font-size: 42rpx;
   font-weight: 700;
   color: #FF6B35;
   line-height: 1.1;
 }
 
 .price-unit {
-  font-size: 20rpx;
+  font-size: 24rpx;
   color: #9ca3af;
   margin-left: 4rpx;
 }
 
 .price-note {
-  font-size: 20rpx;
+  font-size: 24rpx;
   color: #ff7d35;
   margin-left: 8rpx;
 }
 
 .price-more {
   margin-left: auto;
-  font-size: 18rpx;
+  font-size: 24rpx;
   color: #8a94a2;
+}
+
+.basic-note {
+  font-size: 28rpx;
+  color: #07a85a;
+  font-weight: 700;
 }
 
 .space-card,
@@ -159,25 +163,25 @@
 
 .stat-label {
   display: block;
-  font-size: 20rpx;
+  font-size: 24rpx;
   color: #8d96a3;
 }
 
 .stat-value {
   display: block;
-  font-size: 24rpx;
+  font-size: 30rpx;
   color: #111827;
   margin-top: 8rpx;
 }
 
 .big-free {
-  color: #08a95c;
+  color: #07C160;
   font-size: 54rpx;
   font-weight: 800;
 }
 
 .big-unit {
-  font-size: 20rpx;
+  font-size: 24rpx;
   margin-left: 4rpx;
 }
 
@@ -191,12 +195,12 @@
 }
 
 .address-text {
-  font-size: 22rpx;
+  font-size: 28rpx;
   color: #4f5965;
 }
 
 .distance-value {
-  font-size: 20rpx;
+  font-size: 26rpx;
   color: #8d96a3;
 }
 
@@ -208,16 +212,23 @@
 
 .mini-btn {
   margin: 0;
-  width: 128rpx;
-  height: 48rpx;
+  min-width: 162rpx;
+  height: 60rpx;
   border-radius: 8rpx;
-  font-size: 20rpx;
-  color: #08a95c;
+  font-size: 26rpx;
+  color: #07a85a;
   background: #e9f8f0;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 6rpx;
   line-height: 1;
+}
+
+.mini-btn-icon {
+  width: 30rpx;
+  height: 30rpx;
+  flex-shrink: 0;
 }
 
 .section-head {
@@ -225,7 +236,7 @@
 }
 
 .section-title {
-  font-size: 24rpx;
+  font-size: 30rpx;
   color: #111827;
   font-weight: 600;
 }
@@ -255,14 +266,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22rpx;
+  font-size: 26rpx;
   font-weight: 700;
   margin-bottom: 12rpx;
 }
 
 .icon-available {
-  background-color: rgba(24, 181, 102, 0.1);
-  color: #18B566;
+  background-color: rgba(7, 193, 96, 0.1);
+  color: #07C160;
 }
 
 .icon-unavailable {
@@ -271,7 +282,7 @@
 }
 
 .service-name {
-  font-size: 20rpx;
+  font-size: 24rpx;
   color: #374151;
   text-align: center;
 }
@@ -298,7 +309,6 @@
 .bottom-btn {
   flex: 1;
   height: 88rpx;
-  line-height: 88rpx;
   text-align: center;
   font-size: 30rpx;
   font-weight: 600;
@@ -306,6 +316,16 @@
   border: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+}
+
+.bottom-btn-icon {
+  width: 40rpx;
+  height: 40rpx;
+  flex-shrink: 0;
 }
 
 .bottom-btn::after {
@@ -314,12 +334,12 @@
 
 .btn-nav {
   background-color: #ffffff;
-  color: #08a95c;
-  border: 2rpx solid #08a95c;
+  color: #07a85a;
+  border: 2rpx solid #07C160;
 }
 
 .btn-park {
-  background-color: #18B566;
+  background-color: #07C160;
   color: #ffffff;
 }
 
@@ -401,8 +421,8 @@
 }
 
 .vehicle-chip.active {
-  background-color: rgba(24, 181, 102, 0.1);
-  border-color: #18B566;
+  background-color: rgba(7, 193, 96, 0.1);
+  border-color: #07C160;
 }
 
 .chip-plate {
@@ -412,13 +432,13 @@
 }
 
 .vehicle-chip.active .chip-plate {
-  color: #18B566;
+  color: #07C160;
 }
 
 .chip-default-tag {
-  font-size: 18rpx;
-  color: #18B566;
-  background-color: rgba(24, 181, 102, 0.15);
+  font-size: 22rpx;
+  color: #07C160;
+  background-color: rgba(7, 193, 96, 0.15);
   padding: 2rpx 10rpx;
   border-radius: 8rpx;
   font-weight: 600;
@@ -449,7 +469,7 @@
 .field-price {
   display: block;
   font-size: 28rpx;
-  color: #18B566;
+  color: #07C160;
   font-weight: 600;
   line-height: 84rpx;
   padding-left: 4rpx;
@@ -485,7 +505,7 @@
 }
 
 .btn-confirm {
-  background-color: #18B566;
+  background-color: #07C160;
   color: #ffffff;
 }
 

@@ -1,8 +1,7 @@
 <view class="page" bindtouchstart="onTouchStart" bindtouchend="onTouchEnd">
   <view class="nav-bar" style="padding-top: {{statusBarHeight}}px">
-    <view class="nav-back" bindtap="goBack">
+    <view class="nav-back glass-back-btn" bindtap="goBack">
       <text class="nav-back-arrow">‹</text>
-      <text class="nav-back-text">返回</text>
     </view>
     <text class="nav-title">{{isEdit ? '编辑车辆' : '添加车辆'}}</text>
     <view class="nav-placeholder"></view>
@@ -34,7 +33,10 @@
       <text class="default-text">设为默认车辆</text>
     </view>
 
-    <view class="submit-btn" bindtap="handleSubmit">{{submitting ? (isEdit ? '保存中...' : '提交中...') : (isEdit ? '保存修改' : '确认添加')}}</view>
+    <view class="submit-btn" bindtap="handleSubmit">
+      <image class="submit-btn-icon" src="/images/btn-add-car-white.png" mode="aspectFit"></image>
+      <text>{{submitting ? (isEdit ? '保存中...' : '提交中...') : (isEdit ? '保存修改' : '确认添加')}}</text>
+    </view>
   </view>
 
   <view class="tips-card">

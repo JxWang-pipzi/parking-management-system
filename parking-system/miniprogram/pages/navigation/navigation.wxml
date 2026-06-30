@@ -1,6 +1,6 @@
 <view class="page">
   <view class="nav" style="padding-top: {{statusBarHeight}}px">
-    <view class="back" bindtap="goBack">‹</view>
+    <view class="back glass-back-btn" bindtap="goBack">‹</view>
     <text class="title">导航中</text>
     <text class="exit" bindtap="exitNavigation">退出</text>
   </view>

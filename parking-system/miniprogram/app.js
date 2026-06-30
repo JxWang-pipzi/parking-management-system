@@ -3,15 +3,19 @@ App({
     userInfo: null,
     token: null,
     baseUrl: (function () {
-      var env = __wxConfig ? __wxConfig.envVersion : 'develop'
+      var env = typeof __wxConfig !== 'undefined' && __wxConfig ? __wxConfig.envVersion : 'develop'
       var overrideBaseUrl = wx.getStorageSync('baseUrlOverride')
       if (overrideBaseUrl) {
+        if (/^http:\/\/(127\.0\.0\.1|localhost):8080\/api$/i.test(overrideBaseUrl)) {
+          overrideBaseUrl = overrideBaseUrl.replace(':8080/api', ':8081/api')
+          wx.setStorageSync('baseUrlOverride', overrideBaseUrl)
+        }
         return overrideBaseUrl
       }
       if (env === 'release' || env === 'trial') {
         return 'https://api.smartparking.com/api'
       }
-      return 'http://127.0.0.1:8080/api'
+      return 'http://127.0.0.1:8081/api'
     })()
   },
 
@@ -29,7 +33,7 @@ App({
       return
     }
 
-    var env = __wxConfig ? __wxConfig.envVersion : 'develop'
+    var env = typeof __wxConfig !== 'undefined' && __wxConfig ? __wxConfig.envVersion : 'develop'
     if (env !== 'develop') {
       return
     }
@@ -43,7 +47,7 @@ App({
 
       var cachedIp = wx.getStorageSync('__devServerIp')
       if (cachedIp) {
-        this.globalData.baseUrl = 'http://' + cachedIp + ':8080/api'
+        this.globalData.baseUrl = 'http://' + cachedIp + ':8081/api'
         console.log('[成功][阶段1][开发服务器检测] 时间：' + Date.now() + ' | 结果：使用缓存IP=' + cachedIp)
         return
       }
@@ -92,13 +96,13 @@ App({
       for (var j = start; j < end; j++) {
         ;(function (probeIp, probeSubnet) {
           wx.request({
-            url: 'http://' + probeIp + ':8080/api/parking-lots',
+            url: 'http://' + probeIp + ':8081/api/parking-lots',
             method: 'GET',
             timeout: 2000,
             success: function (res) {
               if (!found && res.statusCode === 200) {
                 found = true
-                that.globalData.baseUrl = 'http://' + probeIp + ':8080/api'
+                that.globalData.baseUrl = 'http://' + probeIp + ':8081/api'
                 wx.setStorageSync('__devServerIp', probeIp)
                 wx.setStorageSync('__devServerSubnet', probeSubnet)
                 console.log('[成功][阶段1][开发服务器探测] 时间：' + Date.now() + ' | 参数：ip=' + probeIp + ' | 结果：探测成功')
@@ -126,11 +130,11 @@ App({
   },
 
   getDefaultBaseUrl() {
-    var env = __wxConfig ? __wxConfig.envVersion : 'develop'
+    var env = typeof __wxConfig !== 'undefined' && __wxConfig ? __wxConfig.envVersion : 'develop'
     if (env === 'release' || env === 'trial') {
       return 'https://api.smartparking.com/api'
     }
-    return 'http://127.0.0.1:8080/api'
+    return 'http://127.0.0.1:8081/api'
   },
 
   getBaseUrl() {

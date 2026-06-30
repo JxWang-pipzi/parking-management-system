@@ -1,10 +1,12 @@
 <view class="active-parking-page">
   <view class="hero" style="padding-top: {{statusBarHeight + 22}}px;">
     <view class="hero-title-row">
-      <view>
+      <view class="glass-back-btn hero-back" bindtap="goBack">‹</view>
+      <view class="hero-copy">
         <text class="hero-title">停车中</text>
         <text class="hero-subtitle">订单进行中</text>
       </view>
+      <view class="hero-placeholder"></view>
     </view>
     <view class="plate-card">
       <view class="plate-box">

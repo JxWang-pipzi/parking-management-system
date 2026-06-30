@@ -18,9 +18,11 @@ var wsManager = {
   maxReconnect: 5,
   listeners: {},
   _connectFlag: false,
+  _eventsBound: false,
 
   connect: function () {
     if (this._connectFlag) return
+    if (this.connected) return
     this._connectFlag = true
 
     var token = app.globalData.token || wx.getStorageSync('token')
@@ -53,23 +55,32 @@ var wsManager = {
       } catch (e) {}
     }
 
-    var wsUrl = baseUrl.replace(/^http(s)?/, 'ws$1') + '/ws/parking/' + token
+    var wsUrl = this._buildWsUrl(baseUrl, token)
+    var safeWsUrl = wsUrl.replace(token, '***')
 
-    log(1, '成功', 'WebSocket连接', 'url=' + wsUrl.replace(token, '***'), '开始连接')
+    log(1, '成功', 'WebSocket连接', 'url=' + safeWsUrl, '开始连接')
 
     var that = this
+    if (this.socketTask) {
+      try {
+        this.socketTask.close({})
+      } catch (e) {}
+      this.socketTask = null
+    }
     this.socketTask = wx.connectSocket({
       url: wsUrl,
       success: function () {
         log(1, '成功', 'WebSocket连接', '', '连接请求已发送')
       },
       fail: function (err) {
-        log(1, '失败', 'WebSocket连接', '', err.errMsg || '连接失败')
+        log(1, '失败', 'WebSocket连接', 'url=' + safeWsUrl, err.errMsg || '连接失败')
         that._connectFlag = false
         that._scheduleReconnect()
       }
     })
 
+    if (this._eventsBound) return
+    this._eventsBound = true
     wx.onSocketOpen(function (res) {
       that.connected = true
       that.reconnectCount = 0
@@ -121,6 +132,11 @@ var wsManager = {
       that._emit('error', { message: err.errMsg })
       that._scheduleReconnect()
     })
+  },
+
+  _buildWsUrl: function (baseUrl, token) {
+    var normalizedBaseUrl = (baseUrl || '').replace(/\/+$/, '')
+    return normalizedBaseUrl.replace(/^http(s)?/i, 'ws$1') + '/ws/parking/' + encodeURIComponent(token)
   },
 
   _startHeartbeat: function () {

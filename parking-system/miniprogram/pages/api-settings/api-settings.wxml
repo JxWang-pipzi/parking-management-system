@@ -1,4 +1,10 @@
 <view class="page">
+  <view class="settings-nav" style="padding-top: {{statusBarHeight + 12}}px">
+    <view class="glass-back-btn" bindtap="goBack">‹</view>
+    <text class="settings-title">接口设置</text>
+    <view class="settings-placeholder"></view>
+  </view>
+
   <view class="card">
     <text class="title">当前接口地址</text>
     <text class="value">{{currentBaseUrl}}</text>
@@ -22,7 +28,7 @@
     <text class="title">自定义地址</text>
     <input
       class="input"
-      placeholder="请输入 http://IP:8080/api 或 https://域名/api"
+      placeholder="请输入 http://IP:8081/api 或 https://域名/api"
       value="{{customBaseUrl}}"
       bindinput="onCustomInput"
     />
@@ -44,7 +50,7 @@
 
   <view class="card">
     <text class="title">演示建议</text>
-    <text class="tip-line">1. 同一 Wi-Fi 演示时，填电脑当前 IPv4 地址，例如 `http://192.168.x.x:8080/api`。</text>
+    <text class="tip-line">1. 同一 Wi-Fi 演示时，填电脑当前 IPv4 地址，例如 `http://192.168.x.x:8081/api`。</text>
     <text class="tip-line">2. 跨网络或无法控制局域网时，优先准备固定外网接口地址。</text>
     <text class="tip-line">3. 如果接口改了，先在这里“测试连接”，再开始演示。</text>
   </view>

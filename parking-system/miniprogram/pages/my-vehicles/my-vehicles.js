@@ -1,14 +1,17 @@
 const app = getApp()
 const { get, put, del } = require('../../utils/request')
-const { showLoading, hideLoading, showSuccess, showError, showConfirm } = require('../../utils/util')
+const { showLoading, hideLoading, showSuccess, showError, showConfirm, safeNavigateBack } = require('../../utils/util')
 
 Page({
   data: {
+    statusBarHeight: 20,
     vehicles: [],
     loading: false
   },
 
   onLoad() {
+    const sysInfo = wx.getSystemInfoSync()
+    this.setData({ statusBarHeight: sysInfo.statusBarHeight || 20 })
     console.log('[成功][阶段1][我的车辆页加载] 时间：' + Date.now())
   },
 
@@ -42,6 +45,10 @@ Page({
 
   goAddVehicle() {
     wx.navigateTo({ url: '/pages/add-vehicle/add-vehicle' })
+  },
+
+  goBack() {
+    safeNavigateBack({ fallbackUrl: '/pages/index/index' })
   },
 
   onEditVehicle(e) {

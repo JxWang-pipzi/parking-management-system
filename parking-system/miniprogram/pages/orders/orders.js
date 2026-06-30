@@ -20,8 +20,16 @@ const TAB_STATUS_MAP = {
 Page({
   data: {
     statusBarHeight: 20,
+    navHeight: 122,
     activeTab: 'all',
+    keyword: '',
+    allOrders: [],
     orders: [],
+    selectionMode: false,
+    selectedOrderIds: [],
+    selectedOrderIdMap: {},
+    deletableVisibleCount: 0,
+    allVisibleSelected: false,
     pendingCount: 0,
     loading: false,
     isLoggedIn: false
@@ -30,8 +38,13 @@ Page({
   onLoad() {
     console.log('[成功][阶段1][页面加载] 时间：' + Date.now() + ' | 参数：无 | 结果：订单页加载')
     const sysInfo = wx.getSystemInfoSync()
-    this.setData({ statusBarHeight: sysInfo.statusBarHeight || 20 })
+    const statusBarHeight = sysInfo.statusBarHeight || 20
+    this.setData({ statusBarHeight: statusBarHeight, navHeight: statusBarHeight + 102 })
     this.checkLogin()
+  },
+
+  onReady() {
+    this.updateNavHeight()
   },
 
   onShow() {
@@ -80,8 +93,33 @@ Page({
     const tab = e.currentTarget.dataset.tab
     if (tab === this.data.activeTab) return
     console.log('[成功][阶段3][切换标签] 时间：' + Date.now() + ' | 参数：tab=' + tab + ' | 结果：切换筛选')
-    this.setData({ activeTab: tab, orders: [] })
+    this.setData({ activeTab: tab, orders: [], allOrders: [], selectionMode: false, selectedOrderIds: [], selectedOrderIdMap: {}, allVisibleSelected: false })
     this.fetchOrders()
+  },
+
+  onSearchInput(e) {
+    this.setData({ keyword: e.detail.value || '' })
+    this.applySearch()
+  },
+
+  clearSearch() {
+    this.setData({ keyword: '' })
+    this.applySearch()
+  },
+
+  updateNavHeight() {
+    var that = this
+    wx.nextTick(function () {
+      wx.createSelectorQuery()
+        .in(that)
+        .select('.orders-nav')
+        .boundingClientRect(function (rect) {
+          if (rect && rect.height) {
+            that.setData({ navHeight: Math.ceil(rect.height) + 4 })
+          }
+        })
+        .exec()
+    })
   },
 
   async fetchOrders() {
@@ -127,12 +165,111 @@ Page({
         pendingCount = rawList.length
       }
 
-      this.setData({ orders, pendingCount, loading: false })
+      this.setData({ allOrders: orders, pendingCount, loading: false })
+      this.applySearch()
       console.log('[成功][阶段4][获取订单] 时间：' + Date.now() + ' | 参数：tab=' + activeTab + ' | 结果：获取' + orders.length + '条订单')
     } catch (error) {
       this.setData({ orders: [], loading: false })
       console.log('[失败][阶段4][获取订单] 时间：' + Date.now() + ' | 原因：' + (error.message || '请求异常') + ' | 参数：tab=' + activeTab)
     }
+  },
+
+  applySearch() {
+    var keyword = (this.data.keyword || '').trim().toLowerCase()
+    var list = this.data.allOrders || []
+    if (keyword) {
+      list = list.filter(function (item) {
+        return String(item.parkingLotName || '').toLowerCase().indexOf(keyword) !== -1 ||
+          String(item.plateNumber || '').toLowerCase().indexOf(keyword) !== -1 ||
+          String(item.orderNo || item.id || '').toLowerCase().indexOf(keyword) !== -1 ||
+          String(item.statusText || '').toLowerCase().indexOf(keyword) !== -1
+      })
+    }
+    var deletableVisibleCount = this.getDeletableOrders(list).length
+    this.setData({
+      orders: list,
+      deletableVisibleCount: deletableVisibleCount,
+      allVisibleSelected: deletableVisibleCount > 0 && this.data.selectedOrderIds.length === deletableVisibleCount
+    })
+    this.syncSelectedWithVisibleOrders(list)
+  },
+
+  getDeletableOrders(list) {
+    return (list || []).filter(function (item) {
+      return Number(item.status) === 1 || Number(item.status) === 2
+    })
+  },
+
+  buildSelectedMap(ids) {
+    var map = {}
+    ;(ids || []).forEach(function (id) {
+      map[id] = true
+    })
+    return map
+  },
+
+  syncSelectedWithVisibleOrders(list) {
+    if (!this.data.selectionMode) return
+    var visibleDeletableIds = this.getDeletableOrders(list || this.data.orders).map(function (item) {
+      return String(item.id)
+    })
+    var selected = this.data.selectedOrderIds.filter(function (id) {
+      return visibleDeletableIds.indexOf(String(id)) !== -1
+    })
+    this.setData({
+      selectedOrderIds: selected,
+      selectedOrderIdMap: this.buildSelectedMap(selected),
+      allVisibleSelected: selected.length > 0 && selected.length === visibleDeletableIds.length
+    })
+  },
+
+  toggleSelectionMode() {
+    var next = !this.data.selectionMode
+    this.setData({
+      selectionMode: next,
+      selectedOrderIds: [],
+      selectedOrderIdMap: {},
+      allVisibleSelected: false
+    })
+  },
+
+  toggleSelectOrder(e) {
+    var id = String(e.currentTarget.dataset.id || '')
+    var status = Number(e.currentTarget.dataset.status)
+    if (!id) return
+    if (status !== 1 && status !== 2) {
+      showError('进行中或待支付订单不能删除')
+      return
+    }
+    var selected = this.data.selectedOrderIds.slice()
+    var index = selected.indexOf(id)
+    if (index >= 0) {
+      selected.splice(index, 1)
+    } else {
+      selected.push(id)
+    }
+    this.setData({
+      selectedOrderIds: selected,
+      selectedOrderIdMap: this.buildSelectedMap(selected),
+      allVisibleSelected: selected.length > 0 && selected.length === this.data.deletableVisibleCount
+    })
+  },
+
+  selectAllVisible() {
+    var ids = this.getDeletableOrders(this.data.orders).map(function (item) {
+      return String(item.id)
+    })
+    if (ids.length === 0) {
+      showError('当前没有可删除订单')
+      return
+    }
+    var allSelected = ids.length === this.data.selectedOrderIds.length
+    var selected = allSelected ? [] : ids
+    this.setData({
+      selectedOrderIds: selected,
+      selectedOrderIdMap: this.buildSelectedMap(selected),
+      allVisibleSelected: selected.length > 0 && selected.length === ids.length
+    })
   },
 
   calcDuration(start, end) {
@@ -256,7 +393,37 @@ Page({
     }
   },
 
+  async deleteSelectedOrders() {
+    var ids = this.data.selectedOrderIds.slice()
+    if (ids.length === 0) {
+      showError('请选择要删除的订单')
+      return
+    }
+
+    const confirmed = await showConfirm('确认删除选中的' + ids.length + '条订单记录？删除后不可恢复')
+    if (!confirmed) return
+
+    showLoading('删除中...')
+    try {
+      for (var i = 0; i < ids.length; i++) {
+        await del('/orders/' + ids[i])
+      }
+      hideLoading()
+      showSuccess('已删除' + ids.length + '条记录')
+      this.setData({ selectionMode: false, selectedOrderIds: [], selectedOrderIdMap: {}, allVisibleSelected: false })
+      this.fetchOrders()
+    } catch (error) {
+      hideLoading()
+      showError(error.message || '批量删除失败')
+      console.log('[失败][阶段4][批量删除订单] 时间：' + Date.now() + ' | 原因：' + (error.message || '删除异常') + ' | 参数：ids=' + ids.join(','))
+    }
+  },
+
   goDetail(e) {
+    if (this.data.selectionMode) {
+      this.toggleSelectOrder(e)
+      return
+    }
     const id = e.currentTarget.dataset.id
     const status = Number(e.currentTarget.dataset.status)
     console.log('[成功][阶段2][查看详情] 时间：' + Date.now() + ' | 参数：orderId=' + id + ' | 结果：跳转详情页')

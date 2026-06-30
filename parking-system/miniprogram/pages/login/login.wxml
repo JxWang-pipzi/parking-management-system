@@ -1,4 +1,5 @@
 <view class="login-container">
+  <view class="glass-back-btn floating-glass-back" style="top: {{statusBarHeight + 16}}px" bindtap="goBack">‹</view>
   <view class="top-spacer"></view>
 
   <view class="logo-section">
@@ -25,8 +26,15 @@
       <input class="form-input" password placeholder="请输入密码" bindinput="onPasswordInput" value="{{password}}" />
     </view>
 
-    <button class="btn-submit" bindtap="handleLogin">登录</button>
-    <button class="btn-wechat" bindtap="onWechatLogin">微信快捷登录</button>
+    <button class="btn-submit" bindtap="handleLogin">
+      <image class="btn-icon" src="/images/btn-login-white.png" mode="aspectFit"></image>
+      <text>登录</text>
+    </button>
+    <button class="btn-wechat" bindtap="onWechatLogin">
+      <image class="btn-icon" src="/images/btn-wechat-login.png" mode="aspectFit"></image>
+      <text>微信快捷登录</text>
+    </button>
+    <text class="wechat-tip">授权后展示微信昵称和头像；微信号受平台隐私限制不会直接获取。</text>
 
     <view class="switch-mode">
       <text class="link-text" bindtap="navigateToRegister">还没有账号？立即注册</text>

@@ -1,5 +1,6 @@
 <view class="page">
-  <view class="header-bar">
+  <view class="header-bar" style="padding-top: {{statusBarHeight + 12}}px">
+    <view class="glass-back-btn" bindtap="goBack">‹</view>
     <text class="header-title">我的车辆</text>
     <text class="header-add" bindtap="goAddVehicle">+ 添加</text>
   </view>
@@ -38,6 +39,9 @@
     <image class="empty-img" src="/images/my-car.png" mode="aspectFit"></image>
     <text class="empty-text">暂无车辆</text>
     <text class="empty-hint">添加车辆后预约时可自动填充车牌号</text>
-    <view class="empty-add-btn" bindtap="goAddVehicle">立即添加车辆</view>
+    <view class="empty-add-btn" bindtap="goAddVehicle">
+      <image class="empty-add-icon" src="/images/btn-add-car.png" mode="aspectFit"></image>
+      <text>立即添加车辆</text>
+    </view>
   </view>
 </view>

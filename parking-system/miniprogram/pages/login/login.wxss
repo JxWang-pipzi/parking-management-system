@@ -1,11 +1,11 @@
 .login-container {
   min-height: 100vh;
-  background-color: #ffffff;
+  background-color: #f7f7f7;
   padding: 0 48rpx;
 }
 
 .top-spacer {
-  height: 30vh;
+  height: 18vh;
 }
 
 .logo-section {
@@ -37,6 +37,11 @@
 
 .form-section {
   width: 100%;
+  background-color: #ffffff;
+  border-radius: 28rpx;
+  padding: 36rpx 28rpx 44rpx;
+  box-sizing: border-box;
+  box-shadow: 0 10rpx 28rpx rgba(15, 23, 42, 0.05);
 }
 
 .form-item {
@@ -122,28 +127,40 @@
 }
 
 .btn-submit {
-  background-color: #18B566;
+  background-color: #07C160;
   color: #ffffff;
   border-radius: 44rpx;
   height: 88rpx;
   font-size: 32rpx;
   font-weight: 600;
   margin-top: 40rpx;
-  line-height: 88rpx;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
 }
 
 .btn-wechat {
   background-color: #ffffff;
-  color: #18B566;
+  color: #07C160;
   border-radius: 44rpx;
   height: 88rpx;
   font-size: 30rpx;
   font-weight: 600;
   margin-top: 24rpx;
-  line-height: 88rpx;
   width: 100%;
-  border: 2rpx solid #18B566;
+  border: 2rpx solid #07C160;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+}
+
+.btn-icon {
+  width: 42rpx;
+  height: 42rpx;
+  flex-shrink: 0;
 }
 
 .btn-submit::after {
@@ -152,6 +169,15 @@
 
 .btn-wechat::after {
   border: none;
+}
+
+.wechat-tip {
+  display: block;
+  margin-top: 16rpx;
+  color: #8F96A3;
+  font-size: 24rpx;
+  line-height: 1.6;
+  text-align: center;
 }
 
 .btn-submit:active {
@@ -165,6 +191,6 @@
 }
 
 .link-text {
-  color: #18B566;
+  color: #07C160;
   font-size: 26rpx;
 }

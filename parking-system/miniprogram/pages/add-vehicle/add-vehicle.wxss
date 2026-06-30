@@ -18,12 +18,12 @@
 .nav-back {
   display: flex;
   align-items: center;
-  min-width: 120rpx;
+  justify-content: center;
 }
 
 .nav-back-arrow {
   font-size: 42rpx;
-  color: #111827;
+  color: inherit;
   line-height: 1;
 }
 
@@ -93,8 +93,8 @@
 }
 
 .color-option.active {
-  border-color: #18B566;
-  box-shadow: 0 0 0 4rpx rgba(24, 181, 102, 0.2);
+  border-color: #07C160;
+  box-shadow: 0 0 0 4rpx rgba(7, 193, 96, 0.2);
 }
 
 .color-custom {
@@ -131,8 +131,8 @@
 }
 
 .checkbox-wrap.checked {
-  background-color: #18B566;
-  border-color: #18B566;
+  background-color: #07C160;
+  border-color: #07C160;
 }
 
 .checkbox-inner {
@@ -149,7 +149,7 @@
 .submit-btn {
   width: 100%;
   height: 96rpx;
-  background-color: #18B566;
+  background-color: #07C160;
   color: #ffffff;
   font-size: 32rpx;
   font-weight: 600;
@@ -157,7 +157,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10rpx;
   transition: opacity 0.2s ease;
+}
+
+.submit-btn-icon {
+  width: 42rpx;
+  height: 42rpx;
+  flex-shrink: 0;
 }
 
 .submit-btn:active {

@@ -19,7 +19,13 @@ Page({
     loading: false,
     hourlyRate: 6,
     isFree: false,
-    isFirstParking: true
+    isFirstParking: true,
+    selectedPaymentMethod: 1,
+    paymentMethods: [
+      { value: 1, label: '微信支付', iconType: 'wechat' },
+      { value: 2, label: '支付宝支付', iconType: 'alipay' },
+      { value: 3, label: '银行卡支付', iconType: 'bank' }
+    ]
   },
 
   onLoad(options) {
@@ -147,20 +153,27 @@ Page({
       if (order.status === 3) {
         await put('/orders/' + order.id + '/complete')
       } else {
-        await post('/orders/' + order.id + '/pay', { paymentMethod: 1 })
+        await post('/orders/' + order.id + '/pay', { paymentMethod: this.data.selectedPaymentMethod })
       }
       hideLoading()
       showSuccess(this.data.isFree ? '免费离场成功' : '支付成功')
-      console.log('[成功][阶段4][订单支付] 时间：' + Date.now() + ' | 参数：orderId=' + order.id + ',isFree=' + this.data.isFree + ' | 结果：支付成功，跳转订单列表')
+      console.log('[成功][阶段4][订单支付] 时间：' + Date.now() + ' | 参数：orderId=' + order.id + ',isFree=' + this.data.isFree + ',paymentMethod=' + this.data.selectedPaymentMethod + ' | 结果：支付成功，刷新详情页')
 
+      var that = this
       setTimeout(function () {
-        wx.switchTab({ url: '/pages/orders/orders' })
+        that.loadOrder()
       }, 800)
     } catch (e) {
       hideLoading()
       showError(e.message || '支付失败')
       console.log('[失败][阶段4][订单支付] 时间：' + Date.now() + ' | 原因：' + (e.message || '支付异常') + ' | 参数：orderId=' + order.id)
     }
+  },
+
+  onSelectPayment(e) {
+    var value = Number(e.currentTarget.dataset.value || 1)
+    this.setData({ selectedPaymentMethod: value })
+    console.log('[成功][阶段3][切换支付方式] 时间：' + Date.now() + ' | 参数：paymentMethod=' + value + ' | 结果：已选择')
   },
 
   async cancelOrder() {
@@ -190,6 +203,10 @@ Page({
 
   goHome() {
     wx.switchTab({ url: '/pages/index/index' })
+  },
+
+  finishLeaving() {
+    wx.switchTab({ url: '/pages/orders/orders' })
   },
 
   goBack() {

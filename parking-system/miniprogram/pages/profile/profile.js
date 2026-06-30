@@ -7,6 +7,8 @@ Page({
     statusBarHeight: 20,
     isLoggedIn: false,
     userInfo: null,
+    avatarText: '用',
+    displayAccount: '',
     vehicles: [],
     stats: {
       orderCount: 0,
@@ -33,24 +35,45 @@ Page({
 
   checkLoginStatus() {
     const isLoggedIn = app.isLoggedIn()
+    const userInfo = isLoggedIn ? (app.globalData.userInfo || {}) : null
     this.setData({
       isLoggedIn,
-      userInfo: isLoggedIn ? app.globalData.userInfo : null
+      userInfo,
+      avatarText: this.getAvatarText(userInfo),
+      displayAccount: this.getDisplayAccount(userInfo)
     })
     console.log('[成功][阶段1][登录检查] 时间：' + Date.now() + ' | 参数：无 | 结果：' + (isLoggedIn ? '已登录' : '未登录'))
+  },
+
+  getAvatarText(userInfo) {
+    var name = userInfo && userInfo.name ? String(userInfo.name) : ''
+    return name ? name.charAt(0) : '用'
+  },
+
+  getDisplayAccount(userInfo) {
+    if (!userInfo) return ''
+    var phone = userInfo.phone || ''
+    if (/^wx/i.test(phone) || /^mock-openid-/i.test(userInfo.username || '')) {
+      return '微信授权登录'
+    }
+    return phone || userInfo.email || '已登录'
   },
 
   async getUserProfile() {
     try {
       const res = await get('/users/profile')
       const data = res.data || {}
+      const currentUser = this.data.userInfo || {}
+      const userInfo = {
+        ...currentUser,
+        name: data.name || currentUser.name || '用户昵称',
+        phone: data.phone || currentUser.phone || '',
+        avatar: data.avatar || currentUser.avatar || ''
+      }
       this.setData({
-        userInfo: {
-          ...this.data.userInfo,
-          name: data.name || this.data.userInfo.name,
-          phone: data.phone || this.data.userInfo.phone,
-          avatar: data.avatar || this.data.userInfo.avatar
-        },
+        userInfo,
+        avatarText: this.getAvatarText(userInfo),
+        displayAccount: this.getDisplayAccount(userInfo),
         stats: {
           orderCount: data.orderCount || 0,
           parkCount: data.parkCount || 0,
@@ -191,6 +214,8 @@ Page({
       this.setData({
         isLoggedIn: false,
         userInfo: null,
+        avatarText: '用',
+        displayAccount: '',
         vehicles: [],
         stats: {
           orderCount: 0,

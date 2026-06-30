@@ -1,6 +1,6 @@
 <view class="page">
   <view class="top-nav" style="padding-top: {{statusBarHeight}}px">
-    <view class="back-btn" bindtap="goBack">
+    <view class="back-btn glass-back-btn" bindtap="goBack">
       <text class="back-arrow">‹</text>
     </view>
     <view class="top-actions">
@@ -25,10 +25,16 @@
         <text>24小时营业</text>
       </view>
       <view class="address-row">
-        <text class="price-value">¥{{parkingLot.hourlyRate || 6}}</text>
-        <text class="price-unit">/小时</text>
-        <text class="price-note">封48天 · 月卡¥500 · 2小时内免费</text>
-        <text class="price-more" bindtap="showPriceDetail">价格详情 ›</text>
+        <block wx:if="{{!basicInfoOnly}}">
+          <text class="price-value">¥{{parkingLot.hourlyRate || 6}}</text>
+          <text class="price-unit">/小时</text>
+          <text class="price-note">封顶48元 · 月卡¥500 · 2小时内免费</text>
+          <text class="price-more" bindtap="showPriceDetail">价格详情 ›</text>
+        </block>
+        <block wx:else>
+          <text class="basic-note">周边停车场基础信息 · 支持导航</text>
+          <text class="price-more" bindtap="showPriceDetail">说明 ›</text>
+        </block>
       </view>
     </view>
 
@@ -53,8 +59,14 @@
         <text class="distance-value">距离 {{parkingLot.distance || '320m'}}｜步行 5分钟</text>
       </view>
       <view class="mini-actions">
-        <button class="mini-btn" bindtap="onNavigateTap">导航</button>
-        <button class="mini-btn">路线</button>
+        <button class="mini-btn" bindtap="onNavigateTap">
+          <image class="mini-btn-icon" src="/images/btn-nav.png" mode="aspectFit"></image>
+          <text>导航</text>
+        </button>
+        <button class="mini-btn" bindtap="onNavigateTap">
+          <image class="mini-btn-icon" src="/images/btn-nav.png" mode="aspectFit"></image>
+          <text>路线</text>
+        </button>
       </view>
     </view>
 
@@ -88,11 +100,17 @@
   </scroll-view>
 
   <view class="bottom-bar">
-    <button class="bottom-btn btn-nav" bindtap="onNavigateTap">导航到这里</button>
-    <button class="bottom-btn btn-park" bindtap="onReserveTap">去停车</button>
+    <button class="bottom-btn btn-nav" bindtap="onNavigateTap">
+      <image class="bottom-btn-icon" src="/images/btn-nav.png" mode="aspectFit"></image>
+      <text>导航到这里</text>
+    </button>
+    <button class="bottom-btn btn-park" bindtap="onReserveTap">
+      <image class="bottom-btn-icon" src="/images/btn-park-white.png" mode="aspectFit"></image>
+      <text>{{basicInfoOnly ? '开始导航' : '去停车'}}</text>
+    </button>
   </view>
 
-  <view wx:if="{{showReserveModal}}" class="reserve-overlay" bindtap="onModalCancel">
+  <view wx:if="{{!basicInfoOnly && showReserveModal}}" class="reserve-overlay" bindtap="onModalCancel">
     <view class="reserve-modal" catchtap="">
       <view class="modal-drag-bar"></view>
       <text class="modal-heading">预约车位</text>

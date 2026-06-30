@@ -10,9 +10,9 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: linear-gradient(180deg, #18B566 0%, #1dbf6e 100%);
+  background: linear-gradient(180deg, #07C160 0%, #1dbf6e 100%);
   padding: 20rpx 28rpx 24rpx;
-  box-shadow: 0 8rpx 24rpx rgba(24, 181, 102, 0.12);
+  box-shadow: 0 8rpx 24rpx rgba(7, 193, 96, 0.12);
 }
 
 .header-top {
@@ -36,45 +36,63 @@
 .search-bar {
   display: flex;
   align-items: center;
-  height: 72rpx;
+  height: 78rpx;
   padding: 0 24rpx;
   background-color: rgba(255, 255, 255, 0.96);
-  border-radius: 44rpx;
+  border-radius: 16rpx;
 }
 
-.search-icon {
-  width: 32rpx;
-  height: 32rpx;
-  margin-right: 16rpx;
+.search-symbol {
+  width: 24rpx;
+  height: 24rpx;
+  border: 4rpx solid #b8c0ca;
+  border-radius: 50%;
+  margin-right: 18rpx;
+  position: relative;
   flex-shrink: 0;
+}
+
+.search-symbol::after {
+  content: '';
+  position: absolute;
+  width: 12rpx;
+  height: 4rpx;
+  background-color: #b8c0ca;
+  border-radius: 4rpx;
+  right: -10rpx;
+  bottom: -5rpx;
+  transform: rotate(45deg);
 }
 
 .search-input {
   flex: 1;
-  font-size: 26rpx;
+  font-size: 30rpx;
   color: #333333;
-  height: 72rpx;
-  line-height: 72rpx;
+  height: 78rpx;
+  line-height: 78rpx;
 }
 
 .placeholder {
   color: #94a3b8;
-  font-size: 26rpx;
+  font-size: 30rpx;
 }
 
 .clear-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40rpx;
-  height: 40rpx;
+  width: 44rpx;
+  height: 44rpx;
   margin-left: 12rpx;
+  border-radius: 50%;
+  background-color: #edf0f2;
   flex-shrink: 0;
 }
 
 .clear-icon {
-  font-size: 22rpx;
-  color: #94a3b8;
+  font-size: 28rpx;
+  color: #7C8594;
+  line-height: 1;
 }
 
 .filter-bar {
@@ -90,7 +108,7 @@
   justify-content: center;
   padding: 10rpx 28rpx;
   border-radius: 44rpx;
-  font-size: 24rpx;
+  font-size: 28rpx;
   color: rgba(255, 255, 255, 0.92);
   background-color: rgba(255, 255, 255, 0.14);
   margin-right: 16rpx;
@@ -98,7 +116,7 @@
 }
 
 .filter-tag.active {
-  color: #18B566;
+  color: #07C160;
   background-color: #ffffff;
   font-weight: 600;
 }
@@ -179,7 +197,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #18B566 0%, #0ea05a 100%);
+  background: linear-gradient(135deg, #07C160 0%, #0ea05a 100%);
 }
 
 .placeholder-text {
@@ -192,7 +210,7 @@
   position: absolute;
   left: 16rpx;
   top: 16rpx;
-  background-color: #18B566;
+  background-color: #07C160;
   border-radius: 24rpx;
   padding: 6rpx 18rpx;
 }
@@ -310,7 +328,7 @@
 
 .space-text {
   font-size: 28rpx;
-  color: #18B566;
+  color: #07C160;
   font-weight: 700;
 }
 
@@ -320,7 +338,7 @@
 }
 
 .card-go-btn {
-  background-color: #18B566;
+  background-color: #07C160;
   border-radius: 36rpx;
   padding: 14rpx 30rpx;
   margin-left: 16rpx;
@@ -361,7 +379,7 @@
   width: 44rpx;
   height: 44rpx;
   border: 4rpx solid #e2e8f0;
-  border-top-color: #18B566;
+  border-top-color: #07C160;
   border-radius: 50%;
   animation: spin 0.75s linear infinite;
   margin-bottom: 20rpx;

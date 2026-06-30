@@ -5,11 +5,11 @@
         <view class="user-row">
           <view class="avatar-outer">
             <image wx:if="{{userInfo.avatar}}" class="avatar-image" src="{{userInfo.avatar}}" mode="aspectFill"></image>
-            <view wx:else class="avatar-inner">{{userInfo.name[0] || '用'}}</view>
+            <view wx:else class="avatar-inner">{{avatarText}}</view>
           </view>
           <view class="user-info">
             <text class="user-name">{{userInfo.name || '用户昵称'}}</text>
-            <text class="user-phone">{{userInfo.phone || '138****8888'}}</text>
+            <text class="user-phone">{{displayAccount || '已登录'}}</text>
           </view>
           <view class="header-icon-btn" bindtap="navigateToSettings">
             <image class="header-icon" src="/images/profile-settings.svg" mode="aspectFit"></image>
@@ -30,8 +30,14 @@
           </view>
         </view>
         <view class="guest-actions">
-          <view class="guest-action-btn guest-login-btn" bindtap="navigateToLogin">登录</view>
-          <view class="guest-action-btn guest-register-btn" bindtap="navigateToRegister">注册</view>
+          <view class="guest-action-btn guest-login-btn" bindtap="navigateToLogin">
+            <image class="guest-btn-icon" src="/images/btn-login.png" mode="aspectFit"></image>
+            <text>登录</text>
+          </view>
+          <view class="guest-action-btn guest-register-btn" bindtap="navigateToRegister">
+            <image class="guest-btn-icon" src="/images/btn-register.png" mode="aspectFit"></image>
+            <text>注册</text>
+          </view>
         </view>
       </block>
     </view>
@@ -42,14 +48,43 @@
       <text class="benefit-title">开通月卡</text>
       <text class="benefit-subtitle">享受更多停车优惠</text>
     </view>
-    <view class="benefit-btn" bindtap="navigateToMonthlyCard">去开通</view>
+    <view class="benefit-btn" bindtap="navigateToMonthlyCard">
+      <image class="benefit-btn-icon" src="/images/btn-month-card.png" mode="aspectFit"></image>
+      <text>去开通</text>
+    </view>
   </view>
 
-  <view class="car-section">
+  <view class="panel-section order-section">
+    <view class="section-title-row">
+      <text class="section-title">我的订单</text>
+      <text class="section-more" bindtap="navigateToOrders">全部订单</text>
+    </view>
+    <view class="order-grid">
+      <view class="order-entry" bindtap="navigateToOrders">
+        <view class="order-icon">待</view>
+        <text class="order-label">待付款</text>
+      </view>
+      <view class="order-entry" bindtap="navigateToOrders">
+        <view class="order-icon paid">付</view>
+        <text class="order-label">已付款</text>
+      </view>
+      <view class="order-entry" bindtap="navigateToOrders">
+        <view class="order-icon parking">停</view>
+        <text class="order-label">停车中</text>
+      </view>
+      <view class="order-entry" bindtap="navigateToOrders">
+        <view class="order-icon done">完</view>
+        <text class="order-label">已完成</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="panel-section car-section">
     <view class="section-title-row">
       <text class="section-title">我的车辆</text>
       <text class="section-more" bindtap="navigateToAddCar" wx:if="{{isLoggedIn}}">+ 添加车辆</text>
     </view>
+    <text class="section-desc">可添加多辆车，预约停车时支持手动选择或自动填充默认车辆。</text>
     <view class="car-card">
       <block wx:if="{{vehicles.length > 0}}">
         <view class="car-item" wx:for="{{vehicles}}" wx:key="id" bindtap="navigateToMyCars">
@@ -71,26 +106,30 @@
         <view class="car-info">
           <text class="car-empty-text">暂无车辆，点击添加</text>
         </view>
-        <image class="arrow-icon" src="/images/arrow-right.png" mode="aspectFit"></image>
+        <text class="arrow-text">›</text>
       </view>
       <view wx:else class="car-item car-empty" bindtap="navigateToLogin">
         <view class="car-info">
           <text class="car-empty-text">登录后管理车辆</text>
         </view>
-        <image class="arrow-icon" src="/images/arrow-right.png" mode="aspectFit"></image>
+        <text class="arrow-text">›</text>
       </view>
       <view wx:if="{{isLoggedIn && vehicles.length > 0}}" class="add-car" bindtap="navigateToAddCar">
+        <image class="add-car-icon" src="/images/btn-add-car.png" mode="aspectFit"></image>
         <text class="add-car-text">添加新车辆</text>
-        <image class="add-car-arrow" src="/images/arrow-right.png" mode="aspectFit"></image>
+        <text class="arrow-text add-car-arrow">›</text>
       </view>
       <view wx:elif="{{!isLoggedIn}}" class="add-car" bindtap="navigateToLogin">
         <text class="add-car-text">立即登录</text>
-        <image class="add-car-arrow" src="/images/arrow-right.png" mode="aspectFit"></image>
+        <text class="arrow-text add-car-arrow">›</text>
       </view>
     </view>
   </view>
 
   <view class="menu-section">
+    <view class="section-title-row section-title-row-inner">
+      <text class="section-title">我的服务</text>
+    </view>
     <view class="menu-card">
       <view class="menu-item" bindtap="navigateToCoupons">
         <view class="menu-left">
@@ -99,7 +138,7 @@
         </view>
         <view class="menu-right">
           <text class="menu-value">5张可用</text>
-          <image class="arrow-icon-sm" src="/images/arrow-right.png" mode="aspectFit"></image>
+          <text class="arrow-text">›</text>
         </view>
       </view>
       <view class="menu-item" bindtap="navigateToPayment">
@@ -109,7 +148,7 @@
         </view>
         <view class="menu-right">
           <text class="menu-value">去开通</text>
-          <image class="arrow-icon-sm" src="/images/arrow-right.png" mode="aspectFit"></image>
+          <text class="arrow-text">›</text>
         </view>
       </view>
       <view class="menu-item" bindtap="navigateToInvoice">
@@ -118,7 +157,7 @@
           <text class="menu-text">发票管理</text>
         </view>
         <view class="menu-right">
-          <image class="arrow-icon-sm" src="/images/arrow-right.png" mode="aspectFit"></image>
+          <text class="arrow-text">›</text>
         </view>
       </view>
       <view class="menu-item menu-item-last" bindtap="navigateToAddress">
@@ -127,13 +166,16 @@
           <text class="menu-text">常用地址</text>
         </view>
         <view class="menu-right">
-          <image class="arrow-icon-sm" src="/images/arrow-right.png" mode="aspectFit"></image>
+          <text class="arrow-text">›</text>
         </view>
       </view>
     </view>
   </view>
 
   <view class="menu-section menu-section-tight">
+    <view class="section-title-row section-title-row-inner">
+      <text class="section-title">帮助与关于</text>
+    </view>
     <view class="menu-card">
       <view class="menu-item" bindtap="navigateToFeedback">
         <view class="menu-left">
@@ -141,7 +183,7 @@
           <text class="menu-text">帮助与反馈</text>
         </view>
         <view class="menu-right">
-          <image class="arrow-icon-sm" src="/images/arrow-right.png" mode="aspectFit"></image>
+          <text class="arrow-text">›</text>
         </view>
       </view>
       <view class="menu-item menu-item-last" bindtap="navigateToAbout">
@@ -150,7 +192,7 @@
           <text class="menu-text">关于我们</text>
         </view>
         <view class="menu-right">
-          <image class="arrow-icon-sm" src="/images/arrow-right.png" mode="aspectFit"></image>
+          <text class="arrow-text">›</text>
         </view>
       </view>
     </view>

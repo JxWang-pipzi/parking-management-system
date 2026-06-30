@@ -58,7 +58,7 @@
 }
 
 .is-active .tab-text {
-  color: #18B566;
+  color: #07C160;
   font-weight: 600;
 }
 
@@ -76,8 +76,8 @@
   width: 92rpx;
   height: 92rpx;
   border-radius: 50%;
-  background: linear-gradient(180deg, #20C56F 0%, #18B566 100%);
-  box-shadow: 0 12rpx 24rpx rgba(24, 181, 102, 0.28);
+  background: linear-gradient(180deg, #20C56F 0%, #07C160 100%);
+  box-shadow: 0 12rpx 24rpx rgba(7, 193, 96, 0.28);
   display: flex;
   align-items: center;
   justify-content: center;

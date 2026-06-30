@@ -6,7 +6,7 @@
     </view>
 
     <view class="search-bar">
-      <image class="search-icon" src="/images/search.png"></image>
+      <view class="search-symbol"></view>
       <input
         class="search-input"
         placeholder="搜索停车场名称、地址"

@@ -1,4 +1,5 @@
 <view class="login-container">
+  <view class="glass-back-btn floating-glass-back" style="top: {{statusBarHeight + 16}}px" bindtap="goBack">‹</view>
   <view class="top-spacer"></view>
 
   <view class="logo-section">
@@ -33,7 +34,10 @@
       <input class="form-input" password placeholder="请再次输入密码" bindinput="onConfirmPasswordInput" value="{{confirmPassword}}" />
     </view>
 
-    <button class="btn-submit" bindtap="handleRegister">注册</button>
+    <button class="btn-submit" bindtap="handleRegister">
+      <image class="btn-icon" src="/images/btn-register-white.png" mode="aspectFit"></image>
+      <text>注册</text>
+    </button>
 
     <view class="switch-mode">
       <text class="link-text" bindtap="navigateToLogin">已有账号？返回登录</text>
