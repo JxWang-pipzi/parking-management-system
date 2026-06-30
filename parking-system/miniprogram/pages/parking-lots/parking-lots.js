@@ -240,7 +240,7 @@ Page({
     const id = e.currentTarget.dataset.id
     console.log('[成功][阶段2][跳转详情] 时间：' + Date.now() + ' | 参数：id=' + id + ' | 结果：跳转至详情页')
     wx.navigateTo({
-      url: '/pages/parking-detail/parking-detail?id=' + id + '&mode=basic'
+      url: '/pages/parking-detail/parking-detail?id=' + id
     })
   },
 

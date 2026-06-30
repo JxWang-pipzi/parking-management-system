@@ -383,7 +383,7 @@ Page({
   onParkingTap(e) {
     var id = e.currentTarget.dataset.id
     log(2, '成功', '点击停车场卡片', 'id=' + id, '跳转详情页')
-    wx.navigateTo({ url: '/pages/parking-detail/parking-detail?id=' + id + '&mode=basic' })
+    wx.navigateTo({ url: '/pages/parking-detail/parking-detail?id=' + id })
   },
 
   onViewMoreTap() {
