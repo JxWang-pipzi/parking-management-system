@@ -6,6 +6,13 @@ dist/
 target/
 build/
 
+# Runtime uploads (用户上传的车牌图片等运行时数据，含隐私)
+backend/uploads/
+uploads/
+
+# Runtime temp data (测试时生成的临时数据文件)
+update_lot.json
+
 # IDE
 .idea/
 .vscode/

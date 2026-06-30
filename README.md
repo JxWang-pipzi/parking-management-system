@@ -33,7 +33,7 @@
 
 | 端 | 端口 | 说明 |
 |------|------|------|
-| 后端服务 | 8080 | Spring Boot 应用，context-path 为 `/api`，提供 RESTful API 和 WebSocket 推送 |
+| 后端服务 | 8081 | Spring Boot 应用，context-path 为 `/api`，提供 RESTful API 和 WebSocket 推送 |
 | 前端管理 | 5173 | Vue 3 + Element Plus 管理后台，面向管理员和普通用户 |
 | 微信小程序 | - | 原生小程序，面向车主用户，支持移动端停车预约与支付 |
 
@@ -76,7 +76,7 @@ cd parking-system/backend
 mvn spring-boot:run
 ```
 
-后端服务启动后访问 `http://localhost:8080/api`
+后端服务启动后访问 `http://localhost:8081/api`
 
 ### 前端启动
 
