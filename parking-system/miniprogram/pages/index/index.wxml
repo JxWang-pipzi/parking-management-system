@@ -1,24 +1,42 @@
 <scroll-view scroll-y="{{true}}" class="page" enhanced show-scrollbar="{{false}}" style="height: 100vh">
   <view class="header" style="padding-top: {{statusBarHeight}}px">
     <view class="header-top">
-      <view class="location-row" bindtap="onLocationTap">
-        <text class="location-prefix">定位</text>
-        <text class="location-text">{{locationText || '成都市高新区'}}</text>
-        <text class="location-arrow">›</text>
+      <view class="brand-block">
+        <text class="brand-kicker">SMART PARKING</text>
+        <view class="location-row" bindtap="onLocationTap">
+          <text class="location-dot"></text>
+          <text class="location-text">{{locationText || '成都市高新区'}}</text>
+          <text class="location-arrow">⌄</text>
+        </view>
       </view>
       <view class="msg-btn" bindtap="onMessageTap">
         <image class="msg-icon" src="/images/about.png" />
         <view class="msg-dot"></view>
       </view>
     </view>
+    <view class="hero-copy">
+      <text class="hero-title">城市车位，一触即达</text>
+      <text class="hero-subtitle">实时余位 · 在线预约 · 智能导航</text>
+    </view>
     <view class="search-bar" bindtap="onSearchTap">
       <view class="search-symbol"></view>
       <text class="search-placeholder">搜索目的地 / 停车场</text>
-      <text class="scan-mini" catchtap="onScanTap">扫码</text>
+      <text class="scan-mini" catchtap="onScanTap">扫码入场</text>
+    </view>
+    <view class="hero-metrics">
+      <view class="metric-item"><text class="metric-value">230</text><text class="metric-label">实时空位</text></view>
+      <view class="metric-divider"></view>
+      <view class="metric-item"><text class="metric-value">4</text><text class="metric-label">智慧车场</text></view>
+      <view class="metric-divider"></view>
+      <view class="metric-item"><text class="metric-value">3 min</text><text class="metric-label">平均找位</text></view>
     </view>
   </view>
 
   <view class="quick-grid">
+    <view class="quick-heading">
+      <text class="quick-heading-title">快捷服务</text>
+      <text class="quick-heading-note">企业级智慧停车服务</text>
+    </view>
     <view class="quick-item" wx:for="{{quickEntries}}" wx:key="type" bindtap="onEntryTap" data-type="{{item.type}}">
       <view class="quick-icon">
         <image class="quick-icon-img" src="{{item.icon}}" mode="aspectFit"></image>
@@ -29,8 +47,11 @@
 
   <view class="parking-section">
     <view class="section-title-row">
-      <text class="section-title">附近停车场</text>
-      <text class="section-more" bindtap="onFilterMore">筛选⌄</text>
+      <view>
+        <text class="section-kicker">NEARBY</text>
+        <text class="section-title">附近停车场</text>
+      </view>
+      <text class="section-more" bindtap="onFilterMore">全部车场 ›</text>
     </view>
 
     <view class="filter-tabs">
@@ -57,6 +78,7 @@
             <text class="card-name">{{item.name}}</text>
             <text class="space-tag status-{{item.statusType}}">{{item.statusText}}</text>
           </view>
+          <text class="card-address">{{item.address || '智慧停车服务点'}}</text>
           <view class="card-bottom-row">
             <text class="card-meta">距离 {{item.distanceText || item.distance}}</text>
             <text class="card-meta" wx:if="{{item.walkTime && item.validDistance}}">步行 {{item.walkTime}}</text>

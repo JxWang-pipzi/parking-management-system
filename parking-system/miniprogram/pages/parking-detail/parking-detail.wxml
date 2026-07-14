@@ -12,12 +12,20 @@
   <view class="banner-wrap">
     <image wx:if="{{!bannerError && bannerImage}}" class="banner-img" src="{{bannerImage}}" mode="aspectFill" binderror="onBannerError"></image>
     <view wx:if="{{bannerError || !bannerImage}}" class="banner-error"></view>
+    <view class="banner-shade"></view>
+    <view class="hero-badge">
+      <text class="hero-badge-kicker">SMART PARKING HUB</text>
+      <text class="hero-badge-title">企业级智慧停车服务</text>
+    </view>
   </view>
 
   <scroll-view scroll-y class="main-scroll" style="padding-bottom: calc(140rpx + env(safe-area-inset-bottom))">
     <view class="info-card">
       <view class="title-row">
-        <text class="park-name">{{parkingLot.name}}</text>
+        <view class="title-main">
+          <text class="detail-kicker">PREMIUM PARKING</text>
+          <text class="park-name">{{parkingLot.name}}</text>
+        </view>
         <text class="available-pill">空位充足</text>
       </view>
       <view class="meta-line">
@@ -39,7 +47,7 @@
     </view>
 
     <view class="space-card">
-      <text class="section-title">空位情况</text>
+      <view class="section-label-row"><text class="section-index">01</text><text class="section-title">实时车位</text></view>
       <view class="space-stats">
         <view>
           <text class="stat-label">总车位</text>
@@ -72,7 +80,7 @@
 
     <view class="service-card">
       <view class="section-head">
-        <text class="section-title">服务设施</text>
+        <view class="section-label-row"><text class="section-index">02</text><text class="section-title">服务设施</text></view>
       </view>
       <view class="service-grid">
         <view class="service-item">

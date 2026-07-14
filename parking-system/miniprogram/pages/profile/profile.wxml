@@ -1,6 +1,7 @@
 <view class="profile-page">
   <view class="header" style="padding-top: {{statusBarHeight}}px">
     <view class="header-content">
+      <text class="profile-kicker">MEMBER CENTER</text>
       <block wx:if="{{isLoggedIn}}">
         <view class="user-row">
           <view class="avatar-outer">
@@ -45,8 +46,9 @@
 
   <view class="benefit-card">
     <view class="benefit-left">
-      <text class="benefit-title">开通月卡</text>
-      <text class="benefit-subtitle">享受更多停车优惠</text>
+      <text class="benefit-eyebrow">CITY PASS</text>
+      <text class="benefit-title">企业停车月卡</text>
+      <text class="benefit-subtitle">专属费率 · 电子发票 · 统一管理</text>
     </view>
     <view class="benefit-btn" bindtap="navigateToMonthlyCard">
       <image class="benefit-btn-icon" src="/images/btn-month-card.png" mode="aspectFit"></image>

@@ -1,7 +1,10 @@
 <view class="page">
   <view class="orders-nav" style="padding-top: {{statusBarHeight}}px">
     <view class="title-bar">
-      <text class="title-text">订单记录</text>
+      <view>
+        <text class="title-kicker">ORDER CENTER</text>
+        <text class="title-text">停车订单</text>
+      </view>
       <text wx:if="{{orders.length > 0 || selectionMode}}" class="manage-text" bindtap="toggleSelectionMode">{{selectionMode ? '取消' : '管理'}}</text>
     </view>
 

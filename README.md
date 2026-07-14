@@ -2,6 +2,18 @@
 
 基于 Spring Boot + Vue 3 + 微信小程序的三端架构智慧停车信息管理系统，提供停车场管理、车位预约、在线支付、传感器监控、数据统计等完整功能。
 
+## 微信小程序界面预览
+
+| 首页 | 停车场列表 | 停车场详情 |
+|---|---|---|
+| ![智慧停车首页](docs/screenshots/miniapp-home.png) | ![停车场列表](docs/screenshots/miniapp-list.png) | ![停车场详情](docs/screenshots/miniapp-detail.png) |
+
+| 停车订单 | 个人中心 |
+|---|---|
+| ![停车订单](docs/screenshots/miniapp-orders.png) | ![车主个人中心](docs/screenshots/miniapp-profile.png) |
+
+小程序采用深绿品牌色、清晰的数据卡片和高对比操作区，覆盖“发现车场—查看实时车位—预约停车—追踪订单—管理车辆”的核心流程。
+
 ## 技术栈
 
 **后端**

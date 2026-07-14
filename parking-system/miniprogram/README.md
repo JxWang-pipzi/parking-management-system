@@ -4,6 +4,18 @@
 
 智慧停车微信小程序是一个为用户提供停车位查询、预约、支付等功能的移动应用。用户可以通过小程序快速找到附近的停车场，查看实时车位信息，并进行在线支付。
 
+## 页面预览
+
+| 首页 | 车场目录 | 车场详情 |
+|---|---|---|
+| ![首页](../../docs/screenshots/miniapp-home.png) | ![车场目录](../../docs/screenshots/miniapp-list.png) | ![车场详情](../../docs/screenshots/miniapp-detail.png) |
+
+| 订单中心 | 车主中心 |
+|---|---|
+| ![订单中心](../../docs/screenshots/miniapp-orders.png) | ![车主中心](../../docs/screenshots/miniapp-profile.png) |
+
+视觉升级以企业级智慧出行为目标：深绿品牌主色、统一圆角卡片、数据指标前置，并强化主操作按钮与状态标签的可识别性。
+
 ## 功能特性
 
 ### 核心功能

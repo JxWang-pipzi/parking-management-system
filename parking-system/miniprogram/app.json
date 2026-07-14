@@ -16,7 +16,7 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#07C160",
+    "navigationBarBackgroundColor": "#0B332E",
     "navigationBarTitleText": "智慧停车",
     "navigationBarTextStyle": "white",
     "navigationStyle": "custom"
@@ -24,7 +24,7 @@
   "tabBar": {
     "custom": true,
     "color": "#999999",
-    "selectedColor": "#07C160",
+    "selectedColor": "#159B78",
     "backgroundColor": "#ffffff",
     "borderStyle": "white",
     "list": [
